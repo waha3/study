@@ -1,97 +1,153 @@
 function deepFreeze(obj = {}) {
-	let keyNamesArr = Object.getOwnPropertyNames(obj);
+  let keyNamesArr = Object.getOwnPropertyNames(obj);
 
-	keyNamesArr.forEach(value => {
-		if (typeof obj[value] === 'object' && obj[value] !== null) {
-			deepFreeze(obj[value]);
-		}
-	})
+  keyNamesArr.forEach(value => {
+    if (typeof obj[value] === 'object' && obj[value] !== null) {
+      deepFreeze(obj[value]);
+    }
+  })
 
-	return Object.freeze(obj);
+  return Object.freeze(obj);
 }
 
 
 function deepLoop(obj = {}) {
-	// can not get Symbol key
-	// let propNames = Object.getOwnPropertyNames(obj);
+  // can not get Symbol key
+  // let propNames = Object.getOwnPropertyNames(obj);
 
-	let propNames = Reflect.ownKeys(obj);
+  let propNames = Reflect.ownKeys(obj);
 
-	for (let name of propNames) {
-		console.log(name)
-		if (typeof obj[name] === 'object' && obj[name] !== null) {
-			deepLoop(obj[name]);
-		}
-	}
-	return 'done';
+  for (let name of propNames) {
+    console.log(name)
+    if (typeof obj[name] === 'object' && obj[name] !== null) {
+      deepLoop(obj[name]);
+    }
+  }
+  return 'done';
 }
 
 
 // binary search
 
 function binarySearch(arr = [], target) {
-	let low = 0;
-	let high = arr.length - 1;
+  let low = 0;
+  let high = arr.length - 1;
 
-	while (low <= high) {
-		const mid = Math.floor((low + high) / 2);
-		const guess = arr[mid];
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    const guess = arr[mid];
 
-		if (guess === target) {
-			return mid;
-		} else if (guess > target) {
-			high = mid - 1;
-		} else {
-			low = mid + 1;
-		}
-	}
+    if (guess === target) {
+      return mid;
+    } else if (guess > target) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
 
-	return null;
+  return null;
 }
 
 // linked list
 
 class LinkedList {
-	constructor() {
-		this.list = {};
+  constructor() {
+    this.list = {};
 
-	}
+  }
 
-	find(target) {}
+  find(target) {}
 
-	delete(target) {}
+  delete(target) {}
 
-	insert(pos, target) {
-		this.list
-	}
+  insert(pos, target) {
+    this.list
+  }
 }
 
 
 // 选择排序
 function findSmallestEle(arr = []) {
-	return Math.min(...arr.map(value => value));
+  return Math.min(...arr.map(value => value));
 }
 
 function findSmallestEle(arr = []) {
-	let index = 0;
-	let temp = arr[index];
+  let index = 0;
+  let temp = arr[index];
 
-	for (let i = 1; i < arr.length; i++) {
-		if (temp > arr[i]) {
-			temp = arr[i];
-			index = i;
-		}
-	}
-	return index;
+  for (let i = 1; i < arr.length; i++) {
+    if (temp > arr[i]) {
+      temp = arr[i];
+      index = i;
+    }
+  }
+  return index;
 }
 
 function selectionSort(arr = []) {
-	let newArr = [];
+  let newArr = [];
 
-	while(arr.length > 0) {
-		newArr.push(arr[findSmallestEle(arr)]);
-		arr.splice(findSmallestEle(arr), 1);
-	}
+  while(arr.length > 0) {
+    newArr.push(arr[findSmallestEle(arr)]);
+    arr.splice(findSmallestEle(arr), 1);
+  }
 
-	return newArr;
+  return newArr;
+}
+
+
+// 队列
+class queue {
+  constructor() {
+    this.arr = [];
+  }
+
+  enqueue(ele) {
+    this.arr.push(ele);
+  }
+
+  dequeue(ele) {
+    this.arr.shift(0, 1);
+  }
+}
+
+
+function isPrmime(number) {
+  for (let i = 2; i < number; i++) {
+    if (number % i === 0 || number === 1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function primeList(last) {
+  let primeArr = [];
+  for (let i = 2; i <= last; i++) {
+    isPrmime(i) && primeArr.push(i)
+  }
+  return primeArr;
+}
+
+function countKprimes(k, start, end) {
+  let primeArr = primeList(start);
+  let kPrimeArr = new Set();
+  let count = 0;
+  for (let i = start; i < end; i++) {
+    for (let j = 0; j < primeArr.length; j++) {
+      if (i % primeArr[j] === 0) {
+        console.log(i, primeArr[j])
+        if (k !== 0) {
+          console.log(k, count, i / primeArr[j])
+          
+          countKprimes(k--, 2, i / primeArr[j]);
+          count = count + 1;
+        } else {
+          kPrimeArr.add(i)
+        }
+      }
+    }
+  }
+  return Array.from(kPrimeArr);
 }
