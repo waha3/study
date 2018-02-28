@@ -187,11 +187,3 @@ function countKprimes(k, start, end) {
   }
   return Array.from(kPrimeArr);
 }
-
-  while(arr.length > 0) {
-    newArr.push(arr[findSmallestEle(arr)]);
-    arr.splice(findSmallestEle(arr), 1);
-  }
-
-  return newArr;
-}
