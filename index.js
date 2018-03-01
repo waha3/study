@@ -18,7 +18,6 @@ function deepLoop(obj = {}) {
   let propNames = Reflect.ownKeys(obj);
 
   for (let name of propNames) {
-    console.log(name)
     if (typeof obj[name] === 'object' && obj[name] !== null) {
       deepLoop(obj[name]);
     }
@@ -49,19 +48,80 @@ function binarySearch(arr = [], target) {
 }
 
 // linked list
+class Node {
+  constructor(element) {
+    this.element = element;
+    this.next = null;
+  }
+}
 
 class LinkedList {
   constructor() {
-    this.list = {};
-
+    this.size = 0;
+    this.head = null;
   }
 
-  find(target) {}
+  append(target) {
+    let node = new Node(target);
+    let current;
 
-  delete(target) {}
+    if (this.head === null) {
+      this.head = node;
+    } else {
+      current = this.head;
+      while(current.next) {
+        current = current.next;
+      }
+      current.next = node;
+      this.size += 1;
+    }
+  }
+
+  delete(pos) {
+    if (pos >= 0 && pos < this.size) {
+      let current = this.head;
+      let previous;
+      let index = 1;
+
+      if (pos === 0) {
+        this.head = null;
+      } else {
+        while(index <= pos) {
+          previous = current;
+          current = current.next;
+          index = index + 1;
+        }
+        previous.next = current.next;
+        this.size  -= 1;
+        return current.element;
+      }
+    } else {
+      return null;
+    }
+  }
 
   insert(pos, target) {
-    this.list
+    let node = new Node(target);
+
+    if (pos >= 0 && pos < this.size) {
+      let current = this.head;
+      let previous;
+      let index = 1;
+
+      if (pos === 0) {
+        this.head = node;
+      } else {
+        while(index < pos) {
+          previous = current;
+          current = current.next;
+        }
+        previous.next = node;
+        node.next = current;
+        this.size += 1;
+      }
+    } else {
+      return null;
+    }
   }
 }
 
@@ -93,6 +153,22 @@ function selectionSort(arr = []) {
   }
 
   return newArr;
+}
+
+
+// 队列
+class queue {
+  constructor() {
+    this.arr = [];
+  }
+
+  enqueue(ele) {
+    this.arr.push(ele);
+  }
+
+  dequeue(ele) {
+    this.arr.shift(0, 1);
+  }
 }
 
 
@@ -134,3 +210,83 @@ function mergeSort(arr) {}
 
 
 
+function isPrime(number) {
+  for (let i = 2; i < number; i++) {
+    if (number % i === 0 || number === 1) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function primeList(last) {
+  let primeArr = [];
+  for (let i = 2; i <= last; i++) {
+    isPrime(i) && primeArr.push(i)
+  }
+  return primeArr;
+}
+
+function kp(number) {
+  let primeArr = primeList(Math.floor(Math.sqrt(number)));
+  let count = 1;
+  console.log(count)
+
+  primeArr.map(prime => {
+    if (!isPrime(number) && prime) {
+      if (number % prime === 0) {
+
+        let quotient = number / prime;
+        count = count + 1;
+        // console.log(number, primeArr)
+        // console.log(count)
+        return kp(quotient);
+      }
+    }
+  });
+  console.log(count, 'bottom')
+  // return count;
+}
+
+function countKprimes(k, start, end) {
+  let kPrimeArr = new Set();
+
+  for (let i = start; i <= end; i++) {
+    for (let j = 0; j < primeArr.length; j++) {
+      if (i % primeArr[j] === 0 && i !== primeArr[j]) {
+        // kPrimeArr.add(i)
+        if (k !== 0) {
+          return countKprimes(k--, i, i / primeArr[j]);
+        } else {
+          console.log(end)
+          if (primeArr.includes(end)) {
+            kPrimeArr.push(start)
+          }
+        }
+      }
+    }
+  }
+  return Array.from(kPrimeArr);
+}
+
+
+function josephusSurvivor(n, k){
+  // let list = [];
+  // [...Array(n - 1)].map((v, index) => {
+  //   list.push({
+  //     hasMove: false
+  //   })
+  // })
+
+  let list = [...Array(n - 1)].map((v, i) => i);
+  let count = 0;
+
+  while(list.length !== 1) {
+    if ((list[count % n] + 1) % k === 0) {
+      list.splice(count, 1);
+    }
+
+    count = count + 1;
+  }
+  return list;
+}
