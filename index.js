@@ -269,24 +269,52 @@ function countKprimes(k, start, end) {
   return Array.from(kPrimeArr);
 }
 
-
-function josephusSurvivor(n, k){
-  // let list = [];
-  // [...Array(n - 1)].map((v, index) => {
-  //   list.push({
-  //     hasMove: false
-  //   })
-  // })
-
-  let list = [...Array(n - 1)].map((v, i) => i);
-  let count = 0;
-
-  while(list.length !== 1) {
-    if ((list[count % n] + 1) % k === 0) {
-      list.splice(count, 1);
-    }
-
-    count = count + 1;
-  }
-  return list;
+function runYourString (arg, obj) {
+  return new Function(obj.param, obj.func)(arg);
 }
+
+const compose = (...funcs) => {
+  if (funcs.length === 0) {
+    return (arg) => {
+      return arg;
+    }
+  } else {
+    return funcs.reduce((a, b) => (args) => a(b(args)));
+  }
+}
+
+class Hex {
+  constructor(number) {
+    this.number = number;
+  }
+  
+  static parse(string) {
+    return /^0x+?/.test(string) ? Number(string) : Number(`0x${string}`);
+  }
+
+  toString() {
+    return `0x${this.number.toString(16).toUpperCase()}`;
+  }
+
+  valueOf() {
+    return this.number.valueOf();
+  }
+
+  toJSON() {
+    return `0x${this.number.toString(16).toUpperCase()}`;
+  }
+
+  plus(num) {
+    return this.number.valueOf() + num.valueOf();
+  }
+
+  minus(num) {
+    return this.number.valueOf() - num.valueOf();
+  }
+}
+
+
+Array.prototype.groupBy = (fn) => {
+  this.
+}
+
