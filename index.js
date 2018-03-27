@@ -297,4 +297,3 @@ function deepClone(targetObject) {
   }
   return obj;
 }
-
