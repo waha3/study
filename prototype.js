@@ -91,3 +91,17 @@ Object.defineProperty(a, "name", {
 var b = {};
 b.__proto__ = a;
 b.name = "han"; // 被拦截
+
+var obj = {
+  age: 22
+};
+var myObj = Object.create(obj);
+obj.age; // 22
+myObj.age; // 22
+myObj.age++;
+myObj.age; // 23
+obj.age; // 22
+myObj.hasOwnProperty("age"); // true
+
+function Foo() {}
+Foo.prototype === Object.getPrototypeOf(new Foo()); // true
