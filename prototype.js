@@ -105,3 +105,12 @@ myObj.hasOwnProperty("age"); // true
 
 function Foo() {}
 Foo.prototype === Object.getPrototypeOf(new Foo()); // true
+
+// 原型继承 => 将对应的原型链关联起来 new Object() 将对象原型链关联起来只是一个副作用 可以用Object.create()
+Foo.prototype === Object.getPrototypeOf(new Foo()); // true
+ 
+// 构造函数
+function Foo() {}
+Foo.prototype.constructor === Foo;
+var a = new Foo();
+a.constructor === Foo;
