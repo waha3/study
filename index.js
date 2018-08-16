@@ -2,14 +2,13 @@ function deepFreeze(obj = {}) {
   let keyNamesArr = Object.getOwnPropertyNames(obj);
 
   keyNamesArr.forEach(value => {
-    if (typeof obj[value] === 'object' && obj[value] !== null) {
+    if (typeof obj[value] === "object" && obj[value] !== null) {
       deepFreeze(obj[value]);
     }
-  })
+  });
 
   return Object.freeze(obj);
 }
-
 
 function deepLoop(obj = {}) {
   // can not get Symbol key
@@ -18,13 +17,12 @@ function deepLoop(obj = {}) {
   let propNames = Reflect.ownKeys(obj);
 
   for (let name of propNames) {
-    if (typeof obj[name] === 'object' && obj[name] !== null) {
+    if (typeof obj[name] === "object" && obj[name] !== null) {
       deepLoop(obj[name]);
     }
   }
-  return 'done';
+  return "done";
 }
-
 
 // binary search
 function binarySearch(arr = [], target) {
@@ -69,7 +67,7 @@ class LinkedList {
       this.head = node;
     } else {
       current = this.head;
-      while(current.next) {
+      while (current.next) {
         current = current.next;
       }
       current.next = node;
@@ -86,13 +84,13 @@ class LinkedList {
       if (pos === 0) {
         this.head = null;
       } else {
-        while(index <= pos) {
+        while (index <= pos) {
           previous = current;
           current = current.next;
           index = index + 1;
         }
         previous.next = current.next;
-        this.size  -= 1;
+        this.size -= 1;
         return current.element;
       }
     } else {
@@ -111,7 +109,7 @@ class LinkedList {
       if (pos === 0) {
         this.head = node;
       } else {
-        while(index < pos) {
+        while (index < pos) {
           previous = current;
           current = current.next;
         }
@@ -124,7 +122,6 @@ class LinkedList {
     }
   }
 }
-
 
 // 选择排序
 function findSmallestEle(arr = []) {
@@ -147,14 +144,13 @@ function findSmallestEle(arr = []) {
 function selectionSort(arr = []) {
   let newArr = [];
 
-  while(arr.length > 0) {
+  while (arr.length > 0) {
     newArr.push(arr[findSmallestEle(arr)]);
     arr.splice(findSmallestEle(arr), 1);
   }
 
   return newArr;
 }
-
 
 // 队列
 class queue {
@@ -171,14 +167,13 @@ class queue {
   }
 }
 
-
 // 欧几里得算法 最大公约数
 function maxCommonDivisor(big, small) {
- if (small === 0) {
-   return big;
- } else {
-   return maxCommonDivisor(small, big % small);
- }
+  if (small === 0) {
+    return big;
+  } else {
+    return maxCommonDivisor(small, big % small);
+  }
 }
 
 // 快速排序
@@ -204,11 +199,8 @@ function quickSort(arr) {
   return [...quickSort(less), arr[pivot], ...quickSort(greater)];
 }
 
-
 // 归并排序
 function mergeSort(arr) {}
-
-
 
 function isPrime(number) {
   for (let i = 2; i < number; i++) {
@@ -222,7 +214,7 @@ function isPrime(number) {
 function primeList(last) {
   let primeArr = [];
   for (let i = 2; i <= last; i++) {
-    isPrime(i) && primeArr.push(i)
+    isPrime(i) && primeArr.push(i);
   }
   return primeArr;
 }
@@ -230,12 +222,11 @@ function primeList(last) {
 function kp(number) {
   let primeArr = primeList(Math.floor(Math.sqrt(number)));
   let count = 1;
-  console.log(count)
+  console.log(count);
 
   primeArr.map(prime => {
     if (!isPrime(number) && prime) {
       if (number % prime === 0) {
-
         let quotient = number / prime;
         count = count + 1;
         // console.log(number, primeArr)
@@ -244,7 +235,7 @@ function kp(number) {
       }
     }
   });
-  console.log(count, 'bottom')
+  console.log(count, "bottom");
   // return count;
 }
 
@@ -258,9 +249,9 @@ function countKprimes(k, start, end) {
         if (k !== 0) {
           return countKprimes(k--, i, i / primeArr[j]);
         } else {
-          console.log(end)
+          console.log(end);
           if (primeArr.includes(end)) {
-            kPrimeArr.push(start)
+            kPrimeArr.push(start);
           }
         }
       }
@@ -269,31 +260,54 @@ function countKprimes(k, start, end) {
   return Array.from(kPrimeArr);
 }
 
-function runYourString (arg, obj) {
+function runYourString(arg, obj) {
   return new Function(obj.param, obj.func)(arg);
 }
 
 const compose = (...funcs) => {
   if (funcs.length === 0) {
-    return (arg) => {
+    return arg => {
       return arg;
-    }
+    };
   } else {
-    return funcs.reduce((a, b) => (args) => a(b(args)));
+    return funcs.reduce((a, b) => args => a(b(args)));
   }
-}
+};
 
+const httpGet = (url, callback, err = console.error) => {
+  const request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.onload = () => callback(request);
+  request.onerror = () => err(request);
+  request.send();
 
-function deepClone(targetObject) {
-  let result = Array.isArray(targetObject) ? [] : {};
-  for (let i in targetObject) {
-    if (Object.prototype.toString.call(targetObject[i]) === '[object Object]') {
-      return deepClone(targetObject[i], obj);
-    } else if (Object.prototype.toString.call(i) === '[object Array]') {
-      obj[i] = [...targetObject[i]];
-    } else {
-      obj[i] = targetObject[i];
-    }
-  }
-  return obj;
+  // request.onreadystatechange
+  // 0 unset
+  // 1 opened
+  // 2 headers_received
+  // 3 loading
+  // 4 done
+};
+
+const httpPost = (url, callback, data, err = console.error) => {
+  const request = new XMLHttpRequest();
+  request.open("POST", url, true);
+  request.setRequestHeader("Content-type", "application/json; charset=utf-8");
+  request.onload = () => callback(request.responseText);
+  request.onerror = () => err(request);
+  request.send(data);
+};
+
+function deepClone(obj) {
+  const shallowCopy = Object.assign({}, obj);
+  Object.keys(shallowCopy).forEach(key => {
+    shallowCopy[key] =
+      typeof shallowCopy[key] === "object"
+        ? deepClone(shallowCopy[key])
+        : shallowCopy[key];
+  });
+
+  return Array.isArray(obj)
+    ? (shallowCopy.length = obj.length) && Array.from(shallowCopy)
+    : shallowCopy;
 }

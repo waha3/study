@@ -37,6 +37,10 @@ function LinkList() {
   };
 
   this.delete = function(value) {
+    if (!this.head) {
+      return null;
+    }
 
+    
   }
 }
