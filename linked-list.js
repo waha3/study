@@ -9,7 +9,7 @@ function LinkList() {
 
   this.prepend = function(value) {
     const node = new LinkListNode(value);
-    
+
     node.next = this.head;
     this.head = node;
 
@@ -41,6 +41,7 @@ function LinkList() {
       return null;
     }
 
-    
+
+
   }
 }
