@@ -311,3 +311,23 @@ function deepClone(obj) {
     ? (shallowCopy.length = obj.length) && Array.from(shallowCopy)
     : shallowCopy;
 }
+
+
+function unique(arr = []) {
+  let temp = arr[0];
+  let cursor = 1;
+
+  arr.sort((a, b) => a - b);
+
+  arr.forEach((val, index) => {
+    console.log(arr)
+    if (temp !== val) {
+      arr.splice(cursor, index);
+      temp = val;
+      cursor = index + 1;
+    }
+  });
+
+  arr.splice(cursor, arr.length)
+  return arr;
+}

@@ -111,6 +111,6 @@ Foo.prototype === Object.getPrototypeOf(new Foo()); // true
  
 // 构造函数
 function Foo() {}
-Foo.prototype.constructor === Foo;
+Foo.prototype.constructor === Foo; // true
 var a = new Foo();
-a.constructor === Foo;
+a.constructor === Foo; // true
