@@ -114,3 +114,13 @@ function Foo() {}
 Foo.prototype.constructor === Foo; // true
 var a = new Foo();
 a.constructor === Foo; // true
+a.constructor === Foo.prototype.constructor;
+
+
+
+// String原型对象的原型指向 Object的原型对象
+String.prototype.__proto__ === Object.prototype
+Object.prototype.__proto__ === null
+
+// js 设计问题
+Function__proto__=== Function.prototype
