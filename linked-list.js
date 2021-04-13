@@ -70,3 +70,7 @@ function LinkList() {
 
   this.find = function() {}
 }
+
+/**
+ * 双向链表
+ */
