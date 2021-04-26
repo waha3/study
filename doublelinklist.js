@@ -1,7 +1,3 @@
-/**
- * 最近最少使用缓存
- */
-
 function DoubleLinkListNode(key = null, val = null, prev = null, next = null) {
   this.key = key;
   this.val = val;
@@ -71,48 +67,11 @@ DoubleLinkList.prototype.remove = function (node) {
   return this;
 };
 
-var LRUCache = function (capacity) {
-  this.capacity = capacity;
-  this.map = Object.create(null);
-  this.size = 0;
-  this.list = new DoubleLinkList();
-};
+let list = new DoubleLinkList();
 
-LRUCache.prototype.get = function (key) {
-  if (!this.map[key]) {
-    return -1;
-  }
+var a1 = new DoubleLinkListNode(1, 1);
+var a2 = new DoubleLinkListNode(2, 2);
+var a3 = new DoubleLinkListNode(3, 3);
+var a4 = new DoubleLinkListNode(4, 4);
 
-  var gettedNode = this.map[key];
-  this.list.remove(gettedNode);
-  this.list.append(gettedNode);
-  return gettedNode.val;
-};
 
-LRUCache.prototype.put = function (key, value) {
-  var node = new DoubleLinkListNode(key, value);
-
-  if (key in this.map) {
-    let currentNode = this.map[key];
-
-    this.list.remove(currentNode);
-    this.list.append(node);
-    this.map[key] = node;
-
-    return null;
-  }
-
-  if (this.size < this.capacity) {
-    this.map[key] = node;
-    // 更新到链表上
-    this.list.append(node);
-    this.size = this.size + 1;
-  } else {
-    var deletedMostOldNode = this.list.deleteHead();
-    var _key = deletedMostOldNode.key;
-    delete this.map[_key];
-
-    this.map[key] = node;
-    this.list.append(node);
-  }
-};
