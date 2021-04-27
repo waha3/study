@@ -67,10 +67,4 @@ function LinkList() {
 
     return deletedNode;
   };
-
-  this.find = function() {}
 }
-
-/**
- * 双向链表
- */
