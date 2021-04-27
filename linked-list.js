@@ -7,7 +7,7 @@ function LinkList() {
   this.head = null;
   this.tail = null;
 
-  this.prepend = function(value) {
+  this.prepend = function (value) {
     const node = new LinkListNode(value);
 
     node.next = this.head;
@@ -20,7 +20,7 @@ function LinkList() {
     return this;
   };
 
-  this.append = function(value) {
+  this.append = function (value) {
     const node = new LinkListNode(value);
 
     if (!this.head) {
@@ -36,7 +36,7 @@ function LinkList() {
     return this;
   };
 
-  this.delete = function(value) {
+  this.delete = function (value) {
     if (!this.head) {
       return null;
     }
@@ -67,4 +67,9 @@ function LinkList() {
 
     return deletedNode;
   };
+<<<<<<< HEAD
+=======
+
+  this.find = function () {};
+>>>>>>> 71dba63368659ba02d474f1283af27a8c99bbeb9
 }
