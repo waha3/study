@@ -73,5 +73,3 @@ var a1 = new DoubleLinkListNode(1, 1);
 var a2 = new DoubleLinkListNode(2, 2);
 var a3 = new DoubleLinkListNode(3, 3);
 var a4 = new DoubleLinkListNode(4, 4);
-
-
