@@ -2,7 +2,7 @@
  * 最近最少使用缓存
  */
 
-function DoubleLinkListNode(key = null, val = null, prev = null, next = null) {
+ function DoubleLinkListNode(key = null, val = null, prev = null, next = null) {
   this.key = key;
   this.val = val;
   this.prev = prev;
