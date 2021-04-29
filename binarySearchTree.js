@@ -118,6 +118,12 @@ BinarySearchTree.prototype.remove = function (val) {
   } else if (!currentNode.left) {
     currentNode.right.parent = currentNodeParent;
   } else {
+    // 获取左节点的最大值
+    this.getMin(
+      node.left
+    )
+    this.remove(currentNode.val)
+    this.
   }
 };
 
