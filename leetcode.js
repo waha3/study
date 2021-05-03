@@ -87,25 +87,25 @@ var l2 = {
 
 // addTwoNumbers(l1, l2);
 
-// 
+//
 
-var clumsy = function(n) {
-  // 
+var clumsy = function (n) {
+  //
   var stack1 = [];
   // 运算符
   var stack2 = [];
 
-  for (let i = n; i > 0; i-- ) {
+  for (let i = n; i > 0; i--) {
     if (i % 4 === 1) {
-      stack1
+      stack1;
     }
   }
 };
 
-
 // https://leetcode-cn.com/problems/linked-list-cycle/
+// 快慢指针
 
-var hasCycle = function(head) {
+var hasCycle = function (head) {
   if (!head) {
     return false;
   }
@@ -123,3 +123,54 @@ var hasCycle = function(head) {
   }
   return false;
 };
+
+// 约瑟夫环的问题
+// leetcode超时了
+var lastRemaining = function (n, m) {
+  var Node = function (val) {
+    this.val = val;
+    this.next = null;
+    this.prev = null;
+  };
+
+  var head;
+  var tail;
+  var size = n;
+
+  for (let i = 0; i < n; i++) {
+    var node = new Node(i);
+    if (i === 0) {
+      head = node;
+      tail = node;
+      continue;
+    }
+
+    tail.next = node;
+    node.prev = tail;
+    tail = node;
+
+    if (i + 1 === n) {
+      tail.next = head;
+      head.prev = tail;
+    }
+  }
+
+  var cur = head;
+  var count = 1;
+  while (size > 1) {
+    if (count % m === 0) {
+      console.log(cur.val);
+      var prev = cur.prev;
+      prev.next = cur.next;
+      size = size - 1;
+      count = 1;
+      cur = prev.next;
+    } else {
+      cur = cur.next;
+      count = count + 1;
+    }
+  }
+  return cur.val;
+};
+
+lastRemaining(10, 17);
