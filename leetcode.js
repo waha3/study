@@ -126,6 +126,7 @@ var hasCycle = function (head) {
 
 // 约瑟夫环的问题
 // leetcode超时了
+// 数学解法 暂时不会证明
 var lastRemaining = function (n, m) {
   var Node = function (val) {
     this.val = val;
@@ -173,4 +174,143 @@ var lastRemaining = function (n, m) {
   return cur.val;
 };
 
-lastRemaining(10, 17);
+// lastRemaining(10, 17);
+
+function WeightedQuickUnion(martix) {
+  this.ids = [];
+  this.axis = [];
+  this.weights = [];
+  this.row = martix.length;
+  this.colunm = martix[0].length;
+  this.parts = 0;
+  this.martixClone = martix.slice();
+
+  for (let i = 0; i < this.colunm; i++) {
+    for (let j = 0; j < this.row; j++) {
+      if (martix[j][i] === "O") {
+        this.ids[this.parts] = this.parts;
+        this.axis[this.parts] = {
+          x: i,
+          y: j,
+        };
+
+        if (i === 0 || j === 0 || i === this.colunm - 1 || j === this.row - 1) {
+          this.weights[this.parts] = this.row * this.colunm + 1;
+        } else {
+          this.weights[this.parts] = 1;
+        }
+        this.parts = this.parts + 1;
+      }
+    }
+  }
+}
+
+WeightedQuickUnion.prototype.connected = function (p, q) {
+  return this.find(p) === this.find(q);
+};
+
+WeightedQuickUnion.prototype.find = function (p) {
+  while (this.ids[p] !== p) {
+    p = this.ids[p];
+  }
+  return p;
+};
+
+WeightedQuickUnion.prototype.union = function (p, q) {
+  var pRoot = this.find(p);
+  var qRoot = this.find(q);
+
+  if (pRoot === qRoot) {
+    return;
+  }
+
+  if (this.weights[pRoot] >= this.weights[qRoot]) {
+    this.ids[qRoot] = pRoot;
+    this.weights[pRoot] = this.weights[pRoot] + this.weights[qRoot];
+  } else {
+    this.ids[pRoot] = qRoot;
+    this.weights[qRoot] = this.weights[qRoot] + this.weights[pRoot];
+  }
+  this.parts = this.parts - 1;
+};
+
+WeightedQuickUnion.prototype.isEdgeAndVertix = function (index) {
+  if (
+    this.axis[index].x === 0 ||
+    this.axis[index].x === this.colunm - 1 ||
+    this.axis[index].y === 0 ||
+    this.axis[index].y === this.row - 1
+  ) {
+    return true;
+  }
+  return false;
+};
+
+WeightedQuickUnion.prototype.canConnected = function (i, j) {
+  if (
+    (this.axis[i].x + 1 === this.axis[j].x &&
+      this.axis[i].y === this.axis[j].y) ||
+    (this.axis[i].y + 1 === this.axis[j].y && this.axis[i].x === this.axis[j].x)
+  ) {
+    return true;
+  }
+  return false;
+};
+
+WeightedQuickUnion.prototype.fillX = function (index) {
+  for (let i = 0; i < this.ids.length; i++) {
+    if (!this.isEdgeAndVertix(this.ids[i])) {
+      for (let j = 0; j < this.ids.length; j++) {
+        if (this.ids[i] === this.ids[j]) {
+          this.martixClone[this.axis[j].y][this.axis[j].x] = "X";
+        }
+      }
+    }
+  }
+};
+
+WeightedQuickUnion.prototype.run = function () {
+  var i = 0;
+  while (i < this.ids.length) {
+    for (let j = 0; j < this.ids.length; j++) {
+      if (!this.connected(this.ids[i], this.ids[j])) {
+        if (this.canConnected(i, j)) {
+          this.union(this.ids[i], this.ids[j]);
+        }
+      }
+    }
+    i++;
+  }
+};
+
+/**
+ * [
+  ["X", "O", "X", "O", "X", "O"],
+  ["O", "X", "O", "X", "O", "X"],
+  ["X", "O", "X", "O", "X", "O"],
+  ["O", "X", "O", "X", "O", "X"],
+]
+
+[
+  ["X", "X", "X", "X"],
+  ["X", "O", "O", "X"],
+  ["X", "X", "O", "X"],
+  ["X", "O", "X", "X"],
+]
+
+[["O","O","O"],["O","O","O"],["O","O","O"]]
+
+[["X","X","X"],["X","O","X"],["X","X","X"]]
+
+[["O","X","X","O","X"],["X","O","O","X","O"],["X","O","X","O","X"],["O","X","O","O","O"],["X","X","O","X","O"]]
+ */
+
+var ins = new WeightedQuickUnion([
+  ["X", "X", "O", "O", "X", "O", "X", "O", "X"],
+  ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
+  ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
+  ["O", "O", "O", "O", "O", "X", "X", "O", "O"],
+]);
+ins.run();
+ins.fillX();
+console.log(ins);

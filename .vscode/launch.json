@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Launch Program",
-            "program": "${workspaceFolder}/leetcode.js",
+            "program": "${workspaceFolder}/dp.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
