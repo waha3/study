@@ -1,14 +1,21 @@
+// https://leetcode-cn.com/problems/longest-increasing-subsequence/
+/**
+ * 自顶向下解法
+ */
 var lengthOfLIS = function (nums) {
+  var memorize = {};
   var getLen = function (nums, i) {
     var len = 1;
-    if (nums.length - 1 === i) {
-      return 1;
+
+    if (memorize[i]) {
+      return memorize[i];
     }
 
     for (let j = i + 1; j < nums.length; j++) {
       if (nums[j] > nums[i]) {
-        let childNum = nums.slice(i + 1, nums.length);
-        len = Math.max(getLen(childNum, i + 1)) + 1, len);
+        let res = getLen(nums, j);
+        memorize[j] = res;
+        len = Math.max(getLen(nums, j) + 1, len);
       }
     }
     return len;
@@ -21,4 +28,32 @@ var lengthOfLIS = function (nums) {
   return max_len;
 };
 
-lengthOfLIS([0, 1, 0, 3, 2, 3]);
+/**
+ * 自底向下的解法
+ *
+ * @todo
+ */
+
+var lengthOfLIS = function (nums) {
+  var dp = new Array(nums.length);
+  dp.fill(1);
+
+  for (let i = 0; i < nums.length; i++) {}
+};
+
+/**
+ * https://leetcode-cn.com/problems/maximum-subarray/
+ */
+var maxSubArray = function (nums) {
+  var getSum = function (nums, i) {
+    let sum = 0;
+    if (nums[i] < 0) {
+      sum = Math.max(getSum(nums, i + 1));
+    } else {
+      
+    }
+    return sum;
+  };
+};
+
+maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
