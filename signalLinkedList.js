@@ -67,9 +67,6 @@ function LinkList() {
 
     return deletedNode;
   };
-<<<<<<< HEAD
-=======
 
   this.find = function () {};
->>>>>>> 71dba63368659ba02d474f1283af27a8c99bbeb9
 }

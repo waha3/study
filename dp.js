@@ -4,9 +4,11 @@ var lengthOfLIS = function (nums) {
     if (nums.length - 1 === i) {
       return 1;
     }
+
     for (let j = i + 1; j < nums.length; j++) {
       if (nums[j] > nums[i]) {
-        len = Math.max(getLen(nums.slice(i + 1, nums.length), i + 1) + 1, len);
+        let childNum = nums.slice(i + 1, nums.length);
+        len = Math.max(getLen(childNum, i + 1)) + 1, len);
       }
     }
     return len;
