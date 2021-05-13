@@ -11,3 +11,8 @@
 // 堆排序
 
 // 插入排序
+var sortArray = function(nums) {
+    for (let i = 1; i < nums.length; i++) {
+        let temp = arr[i];
+    }
+};

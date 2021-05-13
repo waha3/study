@@ -47,13 +47,20 @@ var lengthOfLIS = function (nums) {
 var maxSubArray = function (nums) {
   var getSum = function (nums, i) {
     let sum = 0;
+    if (nums.length - 1 === i) {
+      return nums[i];
+    }
+
     if (nums[i] < 0) {
-      sum = Math.max(getSum(nums, i + 1));
+      sum = Math.max(getSum(nums, i + 1), sum);
     } else {
-      
+      sum = getSum(nums, i + 1) + nums[i];
     }
     return sum;
   };
+
+  let sum_max = getSum(nums, 0);
+  return sum_max;
 };
 
 maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
