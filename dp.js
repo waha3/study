@@ -63,4 +63,36 @@ var maxSubArray = function (nums) {
   return sum_max;
 };
 
-maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+// maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+
+// https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/
+var lengthOfLongestSubstring = function (s) {
+  var getChildMaxLength = function (s, i) {
+    if (s.length - 1 === i) {
+      return 1;
+    }
+
+    let childMaxLen = getChildMaxLength(s, i + 1);
+
+    for (let j = i + 1; j < s.length; j++) {
+      for (let k = j + 1; k < j + childMaxLen; k++) {
+        if (s[j] === s[k]) {
+          return Math.max(childMaxLen, s.length - 1 - i - childMaxLen);
+        }
+      }
+    }
+
+    return childMaxLen + 1;
+  };
+
+  var len = 0;
+
+  if (!s) {
+    return len;
+  }
+
+  len = getChildMaxLength(s, 0);
+  return len;
+};
+
+lengthOfLongestSubstring("pwwkew");
