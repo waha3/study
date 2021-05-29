@@ -57,4 +57,11 @@ const dom = createElement(
 
 // console.log(dom);
 
-render(dom, document.querySelector('#root'));
+// render(dom, document.querySelector('#root'));
+
+const fiberNode = {
+  parent: null,
+  children: null,
+  slibing: null,
+  dom: null
+}

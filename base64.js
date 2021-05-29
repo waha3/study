@@ -1,78 +1,58 @@
-
-
 function base64() {
-  // charCodeAt rang is [0, 255]
-  const alphabet =
-  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  const padChar = "=";
-
-  this.getbyte64 = function(str = "", index) {
-    let result = alphabet.indexOf(str.charAt(index));
-    if (result === -1) {
-      throw new Error();
-    }
-    return result;
-  };
-
-  this.getbyte = function(str = "", index) {
-    let result = str.charCodeAt(index);
-    if (result > 255) {
-      throw new Error();
-    }
-
-    return result;
-  };
-
-  this.decode = function(str) {
-    let max = str.length;
-
-    if (max === 0) {
-      return str;
-    }
-
-    if (max % 4 !== 0) {
-      throw new Error();
-    }
-  };
-
-  this.encode = function(str = "") {
-    let length = str.length;
-    let rang = str.length - (str.length % 3);
-
-    if (!length) {
-      return str;
-    }
-
-    let arr = [];
-    let buffer;
-
-    for (let i = 0; i < rang; i += 3) {
-      // 3字节 => 24位缓存区 先占高字节 剩下补0 然后每次取6位
-      buffer =
-        (this.getbyte(str, i) << 16) |
-        (this.getbyte(str, i + 1) << 8) |
-        this.getbyte(str, i + 2);
-
-      console.log(buffer)
-
-      arr.push(alphabet.charAt(buffer >> 18));
-      arr.push(alphabet.charAt((buffer >> 12) & 0x3f));
-      arr.push(alphabet.charAt((buffer >> 6) & 0x3f));
-      arr.push(alphabet.charAt(buffer & 0x3f));
-    }
-
-    let rest = length - rang;
-    switch (rest) {
-      case 1:
-        arr.push(`${padChar}${padChar}`);
-        console.log(1111);
-      case 2:
-        arr.push(padChar);
-        console.log(2222);
-      default:
-        break;
-    }
-
-    return arr.join("");
-  };
+  this.alphabet =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+  this.paddchar = "=";
 }
+
+base64.prototype.encode = function (str) {
+  let strByte = str.length;
+
+  // // 3个字符 => 4个字符
+  // let modRes = strByte % 4;
+
+  // if (modRes !== 0) {
+  //   str = this.paddStr(str, modRes);
+  // }
+
+  // 转换成bit unf-16 => utf-8
+  let bytes = this.utf16ToByte(str);
+
+  for (let i = 0; i < bytes.length; i = i + 6) {
+    let buffer = new ArrayBuffer(6);
+    let uint8 = new Uint8Array(buffer);
+    uint8[i] = 
+
+  }
+};
+
+// 6 bit => 1 alphabet data
+base64.prototype.utf16ToByte = function (str) {
+  let bytes = [];
+  let binaryBytes = [];
+
+  for (let i = 0; i < str.length; i++) {
+    let codePoint = str.codePointAt(i);
+
+    let high = codePoint >> 8;
+    let low = codePoint % 0xff;
+    bytes.push(high);
+    bytes.push(low);
+  }
+
+  for (let i = 0; i < bytes.length; i++) {
+    // to binary
+    // fix negative numbers
+    binaryBytes.push((bytes[i] >>> 0).toString(2));
+  }
+  return binaryBytes;
+};
+
+base64.prototype.paddStr = function (str, len) {
+  for (let i = 0; i < len; i++) {
+    str = `str${this.paddchar}`;
+  }
+  return str;
+};
+
+instance = new base64();
+instance.utf16ToByte("a");

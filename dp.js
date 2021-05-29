@@ -63,4 +63,38 @@ var maxSubArray = function (nums) {
   return sum_max;
 };
 
-maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+// maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+
+var longestPalindrome = function (s) {
+  var memoize = {};
+
+  var get_singal_max = function (s, i) {
+    let child_palindrow = "";
+
+    if (i === s.length - 1) {
+      return s[s.length - 1];
+    }
+
+    for (let j = i + 1; j < s.length; j++) {
+      let child = get_singal_max(s, j);
+      
+      if (child[child.length - 1] === s[i]) {
+        child_palindrow = s[j] + child;
+      }
+    }
+
+    return child_palindrow;
+  };
+
+  let max_palindrow = "";
+
+  for (let i = 0; i < s.length; i++) {
+    if (max_palindrow.length < get_singal_max(s, i).length) {
+      max_palindrow = get_singal_max(s, i);
+    }
+  }
+
+  return max_palindrow;
+};
+
+longestPalindrome("bab");

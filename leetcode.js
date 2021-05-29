@@ -305,12 +305,39 @@ WeightedQuickUnion.prototype.run = function () {
 [["O","X","X","O","X"],["X","O","O","X","O"],["X","O","X","O","X"],["O","X","O","O","O"],["X","X","O","X","O"]]
  */
 
-var ins = new WeightedQuickUnion([
-  ["X", "X", "O", "O", "X", "O", "X", "O", "X"],
-  ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
-  ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
-  ["O", "O", "O", "O", "O", "X", "X", "O", "O"],
-]);
-ins.run();
-ins.fillX();
-console.log(ins);
+// var ins = new WeightedQuickUnion([
+//   ["X", "X", "O", "O", "X", "O", "X", "O", "X"],
+//   ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
+//   ["O", "O", "O", "X", "O", "O", "O", "O", "O"],
+//   ["O", "O", "O", "O", "O", "X", "X", "O", "O"],
+// ]);
+// ins.run();
+// ins.fillX();
+// console.log(ins);
+
+var longestCommonPrefix = function (strs) {
+  let prefix = [];
+  if (strs.length === 1) {
+    return strs[0];
+  }
+
+  for (let i = 0; i < strs[0].length; i++) {
+    for (let j = 1; j < strs.length; j++) {
+      if (strs[j][i] || strs[0][i]) {
+        if (strs[0][i] === strs[j][i]) {
+          if (!prefix[i]) {
+            prefix.push(strs[0][i]);
+          }
+        } else {
+          if (prefix[i]) {
+            prefix.pop();
+          }
+          return prefix.join("");
+        }
+      }
+    }
+  }
+  return prefix.join("");
+};
+
+// longestCommonPrefix(["abab", "aba", ""]);

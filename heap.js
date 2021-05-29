@@ -64,20 +64,41 @@ class MinHeap {
    */
   poll() {}
 
-  heapifyUp(customStwartIndex) {
-    if (cusomtomIndex > 0) {
-      while (
-        this.hasParent(cusomtomIndex) &&
-        this.parent(this.getParentIndex(cusomtomIndex)) >
-          this.leftChild(cusomtomIndex)
-      ) {
-        this.swap(
-          this.parent(this.getParentIndex(cusomtomIndex)),
-          this.leftChild(cusomtomIndex)
-        );
-      }
+  heapifyUp(customStartIndex) {
+    // 默认从最后一个数字开始
+    if (!customStartIndex) {
+      customStartIndex = this.size - 1;
+    }
+
+    while (
+      this.hasParent(customStartIndex) &&
+      this.parent(customStartIndex) > this.arr[customStartIndex]
+    ) {
+      this.swap(customStartIndex, this.getParentIndex(customStartIndex));
+      customStartIndex = this.getParentIndex();
     }
   }
 
-  heapifyDown(cusomtomIndex) {}
+  heapifyDown(customStartIndex) {
+    if (!customStartIndex) {
+      customStartIndex = 0;
+    }
+
+    let leftChild = this.leftChild(customStartIndex);
+    let rightChild = this.rightChild(customStartIndex)
+    while(leftChild > this.arr[customStartIndex]) {
+      
+    }
+  }
+
+  insert(val) {
+    if (this.size < this.capcaity) {
+      this.arr.push(val);
+    }
+  }
 }
+
+var miniheap = new MinHeap(10);
+miniheap.insert(10);
+miniheap.insert(2);
+miniheap.insert(4);
