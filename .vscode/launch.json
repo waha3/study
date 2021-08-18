@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Launch Program",
-            "program": "${workspaceFolder}/dp.js",
+            "program": "${workspaceFolder}/order-statistic.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
