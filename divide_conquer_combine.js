@@ -1,7 +1,7 @@
 // 分治法
 
 // 主定理
-// T(n) = aT(n/b) + f(n) => T(n) = 0(n ** Math.logb(a)) + 可忽略项目
+// T(n) = aT(n/b) + f(n) => T(n) = 0(n ** lgb(a) + 可忽略项目
 
 // 解决步骤
 // 1. divide
@@ -104,5 +104,5 @@ function square_martix_multiply(A, B) {
 }
 // 矩阵乘法 strassen算法
 // 线代的矩阵的拆分不太明白
-//@todo
+// TODO
 function strassen_martix() {}

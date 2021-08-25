@@ -31,7 +31,7 @@ var lengthOfLIS = function (nums) {
 /**
  * 自底向下的解法
  *
- * @todo
+ * TODO
  */
 
 var lengthOfLIS = function (nums) {

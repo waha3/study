@@ -15,7 +15,7 @@ var insertion_sort = function (nums) {
 };
 
 // 优化插入排序 把最坏的情况复杂度变成nlogn
-// todo
+// TODO
 var insertion_sort_with_binary_search = function (nums) {
   // 反向查找的数组是一个排好序的数组 可以用二分查找
   var binarySearch = function (arr, p, r, target) {
