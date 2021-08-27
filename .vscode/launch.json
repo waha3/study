@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Launch Program",
-            "program": "${workspaceFolder}/binary_search_tree.js",
+            "program": "${workspaceFolder}/red_black_tree.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
