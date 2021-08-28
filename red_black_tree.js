@@ -5,9 +5,11 @@
  * 3.叶节点是黑色 (使用哨兵节点来代替null 为了简化一些边界条件的判断)
  * 4.如果一个节点是红色，则他的两个子节点是黑色
  * 5.对于每个节点，该节点到其所有后代的叶节点的简单路径上，均包含相同数目的黑色节点
- * 黑高: 对于一个节点（不含本节点）到任意的叶节点的简单路径上所有黑色节点得个数
+ *
+ * 黑高: 对于一个节点（不含本节点）到任意的叶节点的简单路径上所有黑色节点得个数(不包含nil节点)
  */
 
+// 旋转后的操作还保持了二叉树搜索树的性质
 // 左旋
 function left_rotate(T, x) {
   // set y
@@ -92,6 +94,7 @@ function rb_insert_fixup(T, z) {
       var y = z.p.p.right;
       // z的叔节点是红色
       // 需要将父节点和叔节点都变成黑色然后为了保持性质5需要将父节点的父节点变成红色 然后再以当前节点迭代
+      // 颜色的直接修改需要保证平衡不能改变性质5
       // case 1
       if (y.color === "red") {
         // 重新作色
@@ -172,7 +175,7 @@ function rb_delete(T, z) {
   // x是表示当z节点被删除后去替换之前y位置的节点
   var x;
   // y节点指向的直接被删除的节点或者被移动的节点（当z有两个子节点的时候）这个时候直接删掉
-  // y节点就可能会影响到红黑树的性质
+  // y节点被删除可能会影响到红黑树的性质
   var y = z;
   y.original_color = y.color;
 
@@ -187,12 +190,13 @@ function rb_delete(T, z) {
     y.original_color = y.color;
     x = y.right;
 
-    // 当z的后继y是z的右节点是直接将y替换z这里面只需要改变x (y.right)d的指针指向y 其他的操作后面会执行
+    // 当z的后继y是z的右节点是直接将y替换z这里面只需要改变x (y.right)的指针指向y 其他的操作后面会执行
     if (y.p === z) {
+      // 将x.p设置为y是得x.p继续指向y在y后面的转换后
       x.p = y;
     } else {
       // 当z的后继y不直接是z的右节点时 需要进行两波操作 第一步是先替换y和y的右节点 在交换z和y
-      transplant(T, y, y.right);
+      rb_transplant(T, y, y.right);
       y.right = z.right;
       y.right.p = y;
     }
@@ -203,73 +207,114 @@ function rb_delete(T, z) {
     y.color = z.color;
   }
 
-  // 删除或者移动的是一个黑色节点 性质2性质5可能会被破坏
-  // 所以这边要传入x节点 当y节点已经被x替换后
+  /**
+   * 删除或者移动的是一个黑色节点 性质2性质5可能会被破坏
+   * 所以这边要传入x节点 当y节点已经被x替换后
+   *
+   * 当y是黑色被删除时y节点所在任意一个路径必然会被减1，这样就违背了性质5
+   * 这时候会将删去y的黑色给x这样x所处的节点颜色就会+1或者+2 当x的颜色是红色（红黑 +1）黑色的时候（黑黑 +2）
+   */
   if (y.original_color === "black") {
     rb_delete_fixup(T, x);
   }
 }
 
+// ps. x(包含了nil节点)是一个双色节点带了一个额外的黑色（继承自被删除的y节点）
+// fixup本质上就是消去删除一个黑色节点对周围节点得影响
+// TODO 还是对于消去双黑的流程有点疑问
 function rb_delete_fixup(T, x) {
   while (x !== T.root && x.color === "black") {
     if (x === x.p.left) {
       // x的兄弟节点
       var w = x.p.right;
       if (w.color === "red") {
-        // case 1
+        /**
+         * case1
+         * x的兄弟节点w是红色
+         * 然后再以w的父节点旋转 这样就可以转换成2，3或者4继续进行处理
+         */
         w.color = "black";
         x.p.color = "red";
         left_rotate(T, x.p);
         w = x.p.right;
       }
 
-      // case 2 已经是旋转后的情况
-      // 当替换的原来z节点得x节点得兄弟节点有两个孩子都是黑色的时候（ps. nil节点也是其子节点）
+      /**
+       * case2
+       * 当x节点得是黑色，兄弟节点有两个孩子都是黑色的时候（ps. nil节点也是其子节点）
+       */
       if (w.left.color === "black" && w.right.color === "black") {
-        w.color = "red"; // 进行到这里可以确定x节点已经兄弟节点的情况已经不违反红黑树的基本性质
-        // 但是x的父节点情况可能是红或者是黑
+        // 所以从x和w上去掉一重黑色
+        w.color = "red";
+        // x的额外的黑色往上沿升（主要目的就是把删掉黑色的副作用提升到区域的根节点上）这样就给w和x原来去掉的黑色右补了回来
         x = x.p;
       } else {
-        // case 3
-        if (w.right.color === "black") {
+        /**
+         * case3
+         * x的兄弟节点是黑色的，w的左孩子是红色，右孩子是黑色的
+         * 将w的左孩子处理变成红色 自己变成黑色然后再右旋保持性质不变
+         * 这样就可以转换成case4进行处理
+         */
+        if (w.left.color === "red" && w.right.color === "black") {
           w.left.color === "black";
           w.color = "red";
           right_rotate(T, w);
           w = x.p.right;
         }
 
-        // case 4 当w右节点得状态不确定的时候
-        w.color = x.p.color;
-        x.p.color = "black";
-        // 保持性质5不变
-        w.right.color = "black";
-        left_rotate(T, x.p);
-        x = T.root;
+        /**
+         * case4
+         * x的兄弟节点w是黑色他的右孩子是红色时
+         * 消除x多余的黑色
+         */
+        if (w.right.color === "red") {
+          w.color = x.p.color;
+          x.p.color = "black";
+          // 保持性质5不变
+          w.right.color = "black";
+          left_rotate(T, x.p);
+          // 终止循环条件
+          x = T.root;
+        }
       }
     } else {
-      // 左右对称的操作
-      // 这个是x的兄弟节点
+      // case1
       var w = x.p.left;
-      // case 1
-      // 当兄弟节点得颜色是红色时候 说明w的子节点是两个黑色节点 因为已经删除了一格黑色节点
-      // 性质5已经破坏掉了 这时候可以改变w的颜色变成黑色w的父节点变成红色
-      // 然后再以w的父节点旋转 这样就可以转换成2，3或者4继续进行处理
       if (w.color === "red") {
         w.color = "black";
-        w.p.color = "red";
-        right_rotate(w.p);
-        // 旋转后重新获取w节点
+        x.p.color = "red";
+        right_rotate(T, x.p);
         w = x.p.left;
       }
-      // case 2
-      // x的兄弟节点是黑色 并且其两个子节点都市黑色的时候
+
+      // case2
       if (w.left.color === "black" && w.right.color === "black") {
-        // x指针往上移动一格
+        w.color = "red";
         x = x.p;
+      } else {
+        // case3
+        if (w.left.color === "black" && w.right.color === "red") {
+          w.right.color = "black";
+          w.color = "red";
+          left_rotate(T, w);
+        }
+
+        // case 4
+        if (w.left.color === "red") {
+          x.p.color = "black";
+          w.color = "red";
+          w.left.color = "black";
+          right_rotate(T, x.p);
+          x = T.root;
+        }
       }
     }
   }
-  // 当x的节点颜色红色时或者是根节点时直接修改其颜色就可以了
+
+  /**
+   * 1.当x的节点颜色红色（x是红黑节点）将x变成（单个）黑色
+   * 2.x指向根节点的时候 简单移除额外的颜色
+   */
   x.color = "black";
 }
 
@@ -307,19 +352,6 @@ var T = {
   nil,
 };
 
-// tree = tree.insert(-12);
-// tree = tree.insert(8);
-// tree = tree.insert(-8);
-// tree = tree.insert(15);
-// tree = tree.insert(4);
-// tree = tree.insert(12);
-// tree = tree.insert(10);
-// tree = tree.insert(9);
-// tree = tree.insert(11);
-// tree = tree.remove(15);
-// tree = tree.remove(-12);
-// tree = tree.remove(9);
-
 rb_insert_with_key(T, -12);
 rb_insert_with_key(T, 8);
 rb_insert_with_key(T, -8);
@@ -331,6 +363,6 @@ rb_insert_with_key(T, 9);
 rb_insert_with_key(T, 11);
 
 rb_delete_with_key(T, 15);
-// rb_delete_with_key(T, -12)
-// rb_delete_with_key(T, 9);
+rb_delete_with_key(T, -12)
+rb_delete_with_key(T, 9);
 // console.log(T);
