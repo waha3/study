@@ -160,12 +160,135 @@ function rb_transplant(T, u, v) {
   v.p = u.p;
 }
 
-// 节点得删除
-function rb_delete(T, z) {
-
+function tree_minimum(T, x) {
+  while (x.left !== T.nil) {
+    x = x.left;
+  }
+  return x;
 }
 
-function rb_delete_fixup(T,z) {}
+// 节点得删除
+function rb_delete(T, z) {
+  // x是表示当z节点被删除后去替换之前y位置的节点
+  var x;
+  // y节点指向的直接被删除的节点或者被移动的节点（当z有两个子节点的时候）这个时候直接删掉
+  // y节点就可能会影响到红黑树的性质
+  var y = z;
+  y.original_color = y.color;
+
+  if (z.left === T.nil) {
+    x = z.right;
+    rb_transplant(T, z, z.right);
+  } else if (z.right === T.nil) {
+    x = z.left;
+    rb_transplant(T, z, z.left);
+  } else {
+    var y = tree_minimum(z.right);
+    y.original_color = y.color;
+    x = y.right;
+
+    // 当z的后继y是z的右节点是直接将y替换z这里面只需要改变x (y.right)d的指针指向y 其他的操作后面会执行
+    if (y.p === z) {
+      x.p = y;
+    } else {
+      // 当z的后继y不直接是z的右节点时 需要进行两波操作 第一步是先替换y和y的右节点 在交换z和y
+      transplant(T, y, y.right);
+      y.right = z.right;
+      y.right.p = y;
+    }
+    rb_transplant(T, z, y);
+    y.left = z.left;
+    y.left.p = y;
+    // 删除掉z节点要保持当前简单路径红黑树的性质不变
+    y.color = z.color;
+  }
+
+  // 删除或者移动的是一个黑色节点 性质2性质5可能会被破坏
+  // 所以这边要传入x节点 当y节点已经被x替换后
+  if (y.original_color === "black") {
+    rb_delete_fixup(T, x);
+  }
+}
+
+function rb_delete_fixup(T, x) {
+  while (x !== T.root && x.color === "black") {
+    if (x === x.p.left) {
+      // x的兄弟节点
+      var w = x.p.right;
+      if (w.color === "red") {
+        // case 1
+        w.color = "black";
+        x.p.color = "red";
+        left_rotate(T, x.p);
+        w = x.p.right;
+      }
+
+      // case 2 已经是旋转后的情况
+      // 当替换的原来z节点得x节点得兄弟节点有两个孩子都是黑色的时候（ps. nil节点也是其子节点）
+      if (w.left.color === "black" && w.right.color === "black") {
+        w.color = "red"; // 进行到这里可以确定x节点已经兄弟节点的情况已经不违反红黑树的基本性质
+        // 但是x的父节点情况可能是红或者是黑
+        x = x.p;
+      } else {
+        // case 3
+        if (w.right.color === "black") {
+          w.left.color === "black";
+          w.color = "red";
+          right_rotate(T, w);
+          w = x.p.right;
+        }
+
+        // case 4 当w右节点得状态不确定的时候
+        w.color = x.p.color;
+        x.p.color = "black";
+        // 保持性质5不变
+        w.right.color = "black";
+        left_rotate(T, x.p);
+        x = T.root;
+      }
+    } else {
+      // 左右对称的操作
+      // 这个是x的兄弟节点
+      var w = x.p.left;
+      // case 1
+      // 当兄弟节点得颜色是红色时候 说明w的子节点是两个黑色节点 因为已经删除了一格黑色节点
+      // 性质5已经破坏掉了 这时候可以改变w的颜色变成黑色w的父节点变成红色
+      // 然后再以w的父节点旋转 这样就可以转换成2，3或者4继续进行处理
+      if (w.color === "red") {
+        w.color = "black";
+        w.p.color = "red";
+        right_rotate(w.p);
+        // 旋转后重新获取w节点
+        w = x.p.left;
+      }
+      // case 2
+      // x的兄弟节点是黑色 并且其两个子节点都市黑色的时候
+      if (w.left.color === "black" && w.right.color === "black") {
+        // x指针往上移动一格
+        x = x.p;
+      }
+    }
+  }
+  // 当x的节点颜色红色时或者是根节点时直接修改其颜色就可以了
+  x.color = "black";
+}
+
+function tree_search(x, key) {
+  if (x === null || x.key === key) {
+    return x;
+  }
+
+  if (key < x.key) {
+    return tree_search(x.left, key);
+  } else {
+    return tree_search(x.right, key);
+  }
+}
+
+function rb_delete_with_key(T, key) {
+  var node = tree_search(T.root, key);
+  rb_delete(T, node);
+}
 
 function rb_tree_node(key) {
   this.color = null;
@@ -184,12 +307,30 @@ var T = {
   nil,
 };
 
-// rb_insert_with_key(T, 41);
-// rb_insert_with_key(T, 38);
-// rb_insert_with_key(T, 31);
-// rb_insert_with_key(T, 12);
-// rb_insert_with_key(T, 19);
-// rb_insert_with_key(T, 8);
-// rb_insert_with_key(T, 50);
-// rb_insert_with_key(T, 45);
+// tree = tree.insert(-12);
+// tree = tree.insert(8);
+// tree = tree.insert(-8);
+// tree = tree.insert(15);
+// tree = tree.insert(4);
+// tree = tree.insert(12);
+// tree = tree.insert(10);
+// tree = tree.insert(9);
+// tree = tree.insert(11);
+// tree = tree.remove(15);
+// tree = tree.remove(-12);
+// tree = tree.remove(9);
+
+rb_insert_with_key(T, -12);
+rb_insert_with_key(T, 8);
+rb_insert_with_key(T, -8);
+rb_insert_with_key(T, 15);
+rb_insert_with_key(T, 4);
+rb_insert_with_key(T, 12);
+rb_insert_with_key(T, 10);
+rb_insert_with_key(T, 9);
+rb_insert_with_key(T, 11);
+
+rb_delete_with_key(T, 15);
+// rb_delete_with_key(T, -12)
+// rb_delete_with_key(T, 9);
 // console.log(T);

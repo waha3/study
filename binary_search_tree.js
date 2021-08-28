@@ -330,9 +330,9 @@ function tree_remove(T, z) {
   } else if (z.right === null) {
     transplant(T, z, z.left);
   } else {
-    var y = tree_minimum(z);
-    // y不是z的后继
-    if (y !== z) {
+    var y = tree_minimum(z.right);
+    // z的后继y 是不是其右节点
+    if (y.p !== z) {
       transplant(T, y, y.right);
       y.right = z.right;
       y.right.p = z;
@@ -346,7 +346,7 @@ function tree_remove(T, z) {
 // 删除节点得辅助过程
 function transplant(T, u, v) {
   if (u.p === null) {
-    t = v;
+    T.root = v;
   } else if (u.p.left === u) {
     u.p.left = v;
   } else {
@@ -366,8 +366,12 @@ tree_insert(T, 3);
 tree_insert(T, 2);
 tree_insert(T, 1);
 tree_insert(T, 10);
-tree_insert(T, 12);
+tree_insert(T, 14);
 tree_insert(T, 9);
+tree_insert(T, 8);
+tree_insert(T, 20);
+tree_insert(T, 11)
+tree_insert(T, 13);
 var node = tree_search(T.root, 10);
 tree_remove(T, node);
 console.log(T);

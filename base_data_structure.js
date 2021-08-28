@@ -67,6 +67,7 @@ function dequeue(Q) {
 
 function double_linked_list() {
   this.head = null;
+  this.tail = null;
 }
 
 function node(key) {
@@ -128,10 +129,6 @@ function treeNode(left, right, val) {
   this.val = val;
 }
 
-// TODO
-// 前序遍历
-// 中序遍历
-// 后序遍历
 
 
 
