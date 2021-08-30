@@ -352,17 +352,18 @@ var T = {
   nil,
 };
 
-rb_insert_with_key(T, -12);
-rb_insert_with_key(T, 8);
-rb_insert_with_key(T, -8);
-rb_insert_with_key(T, 15);
-rb_insert_with_key(T, 4);
-rb_insert_with_key(T, 12);
-rb_insert_with_key(T, 10);
-rb_insert_with_key(T, 9);
-rb_insert_with_key(T, 11);
+// TODO 增加单元测试
+// rb_insert_with_key(T, -12);
+// rb_insert_with_key(T, 8);
+// rb_insert_with_key(T, -8);
+// rb_insert_with_key(T, 15);
+// rb_insert_with_key(T, 4);
+// rb_insert_with_key(T, 12);
+// rb_insert_with_key(T, 10);
+// rb_insert_with_key(T, 9);
+// rb_insert_with_key(T, 11);
 
-rb_delete_with_key(T, 15);
-rb_delete_with_key(T, -12)
-rb_delete_with_key(T, 9);
+// rb_delete_with_key(T, 15);
+// rb_delete_with_key(T, -12)
+// rb_delete_with_key(T, 9);
 // console.log(T);

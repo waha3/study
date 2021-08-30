@@ -362,16 +362,16 @@ var T = {
   root: null,
 };
 
-tree_insert(T, 3);
-tree_insert(T, 2);
-tree_insert(T, 1);
-tree_insert(T, 10);
-tree_insert(T, 14);
-tree_insert(T, 9);
-tree_insert(T, 8);
-tree_insert(T, 20);
-tree_insert(T, 11)
-tree_insert(T, 13);
-var node = tree_search(T.root, 10);
-tree_remove(T, node);
-console.log(T);
+// tree_insert(T, 3);
+// tree_insert(T, 2);
+// tree_insert(T, 1);
+// tree_insert(T, 10);
+// tree_insert(T, 14);
+// tree_insert(T, 9);
+// tree_insert(T, 8);
+// tree_insert(T, 20);
+// tree_insert(T, 11)
+// tree_insert(T, 13);
+// var node = tree_search(T.root, 10);
+// tree_remove(T, node);
+// console.log(T);

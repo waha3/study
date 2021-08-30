@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Launch Program",
-            "program": "${workspaceFolder}/red_black_tree.js",
+            "program": "${workspaceFolder}/算法导论/avl_tree.js",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
