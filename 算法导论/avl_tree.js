@@ -52,7 +52,7 @@ function right_rotate(T, x) {
   x.left = y.right;
 
   if (y.right !== null) {
-    y.left.right = x;
+    y.right.p = x;
   }
 
   y.p = x.p;

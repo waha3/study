@@ -104,5 +104,5 @@ function square_martix_multiply(A, B) {
 }
 // 矩阵乘法 strassen算法
 // 线代的矩阵的拆分不太明白
-// TODO
+// TODO 矩阵乘法
 function strassen_martix() {}

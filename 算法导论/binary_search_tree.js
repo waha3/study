@@ -295,24 +295,24 @@ function tree_insert(T, key) {
 
 // insert recursive
 function tree_insert_recursive(T, key) {
-  if (T == null) {
-    T = new tree_node(key);
+  if (T.root == null) {
+    T.root = new tree_node(key);
   } else {
-    insert(T, key);
+    insert(T.root, key);
   }
 }
 
-function insert(T, key) {
-  if (T !== null) {
-    tree_insert_recursive(T.left, key);
-    tree_insert_recursive(T.right, key);
+function insert(x, key) {
+  if (x === null) {
+    return new tree_node(key);
+  } else if (key < x.key) {
+    x.left = insert(x.left, key);
+    x.left.p = x;
   } else {
-    if (T.p.left.key < key) {
-      T.p.left = new tree_node(key);
-    } else {
-      T.p.right = new tree_node(key);
-    }
+    x.right = insert(x.right, key);
+    x.right.p = x;
   }
+  return x;
 }
 
 // 删除节点
@@ -372,6 +372,11 @@ var T = {
 // tree_insert(T, 20);
 // tree_insert(T, 11)
 // tree_insert(T, 13);
+// tree_insert_recursive(T, 3);
+// tree_insert_recursive(T, 2);
+// tree_insert_recursive(T, 1);
+// tree_insert_recursive(T, 10);
+// tree_insert_recursive(T, 14);
 // var node = tree_search(T.root, 10);
 // tree_remove(T, node);
 // console.log(T);
