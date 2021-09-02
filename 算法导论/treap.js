@@ -106,20 +106,66 @@ function treap_delete(T, z) {
 
 function treap_delete_with_key(T, key) {}
 
-// TODO treap 非旋转实现 （有点类似于b树）
-function split() {}
-function merge() {}
-function build() {}
+// TODO treap 非旋转实现
+function split(x, key) {
+  if (x === null) {
+    return {
+      left: null,
+      right: null,
+    };
+  } else {
+    if (key < x.key) {
+      var left_part = split(x.left, key);
+      return {
+        left: left_part,
+        right: null,
+      };
+    } else {
+      var right_part = split(x.right, key);
+      return {
+        left: null,
+        right: right_part,
+      };
+    }
+  }
+}
+
+function merge(left, right) {
+  if (left === null && right === null) {
+    return null;
+  } else if (left.priority < right.priority) {
+    // right应该是变成left的孩子 同时要满足二叉搜索树的性质
+    left.right = merge(left.right, right);
+    return left;
+  } else {
+    right.left = merge(right.left, left);
+    return right;
+  }
+}
+
+function build(T, key) {
+  var seed = 10000;
+  var node = new treap_node(key);
+  node.priority = Math.ceil(Math.random() * seed);
+
+  var { left, right } = split(T.root, key);
+  var root = merge(merge(left, node), right);
+  T.root = root;
+}
 
 var T = {
   root: null,
 };
 
-treap_insert_with_key(T, 50);
-treap_insert_with_key(T, 30);
-treap_insert_with_key(T, 20);
-treap_insert_with_key(T, 40);
-treap_insert_with_key(T, 70);
-treap_insert_with_key(T, 60);
-treap_insert_with_key(T, 80);
-console.log(T);
+// treap_insert_with_key(T, 50);
+// treap_insert_with_key(T, 30);
+// treap_insert_with_key(T, 20);
+// treap_insert_with_key(T, 40);
+// treap_insert_with_key(T, 70);
+// treap_insert_with_key(T, 60);
+// treap_insert_with_key(T, 80);
+
+// build(T, 50);
+// build(T, 30);
+// build(T, 20);
+// console.log(T);

@@ -103,7 +103,6 @@ function preorder_tree_walk_interation(x) {
 
   while (!done) {
     if (current) {
-      console.log(current.key);
       stack.push(current);
       current = current.left;
     } else {

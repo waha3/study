@@ -6,12 +6,15 @@
     "configurations": [
         {
             "name": "Launch Program",
-            "program": "${workspaceFolder}/算法导论/treap.js",
+            "program": "${workspaceFolder}/算法导论/skip_list.ts",
             "request": "launch",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "type": "pwa-node"
+            "type": "pwa-node",
+            // "preLaunchTask": "",
+            "outDir": "${workspaceRoot}/bin",
+            "sourceMaps": true,
         },
         {
             "type": "pwa-chrome",
