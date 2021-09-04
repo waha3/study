@@ -2,3 +2,5 @@ node_modules
 dist
 .idea/**
 cmake-build-debug
+bin
+package-lock.json

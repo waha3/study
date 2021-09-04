@@ -1,0 +1,28 @@
+{
+  "name": "study",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "study": "skip_list.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "ts-node": "^10.2.1",
+    "tsconfig-paths": "^3.11.0",
+    "typescript": "^4.4.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/waha3/study.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/waha3/study/issues"
+  },
+  "homepage": "https://github.com/waha3/study#readme"
+}
