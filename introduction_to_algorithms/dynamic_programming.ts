@@ -248,7 +248,7 @@ interface lis {
   length: number;
 }
 
-// TODO
+// TODO 最长递增子序列
 function lis<T extends lis>(X: T): number {
   let m = X.length;
   let C = new Array(m + 1);

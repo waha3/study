@@ -60,7 +60,7 @@ function memoize_cut_rod_aux(n, p, arr) {
  * 自底像上
  */
 function bottom_up_cut_rod(n, p) {
-  var arr = new Array(n);
+  var arr = new Array(n + 1);
   arr[0] = 0;
   var r = -Infinity;
 
@@ -70,7 +70,7 @@ function bottom_up_cut_rod(n, p) {
     }
     arr[i] = r;
   }
-  return r;
+  return arr[n];
 }
 
 function expand_bottom_up_cut_rod(n, p) {
