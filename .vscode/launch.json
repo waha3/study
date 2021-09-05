@@ -18,7 +18,7 @@
         "-r",
         "tsconfig-paths/register"
       ],
-      "console": "integratedTerminal",
+      // "console": "integratedTerminal",
     },
     {
       "type": "node",

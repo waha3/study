@@ -1,110 +1,94 @@
-import React, { PureComponent, forwardRef } from 'react';
-import { raf, caf } from '../前端/raf.js';
+import React from "react";
 
-function noop() {}
+const presets = {
+  noWobble: { stiffness: 170, damping: 26 }, // the default, if nothing provided
+  gentle: { stiffness: 120, damping: 14 },
+  wobbly: { stiffness: 180, damping: 12 },
+  stiff: { stiffness: 210, damping: 20 },
+};
 
-function spring(val, config) {
-    return {
-        ...config,
-        val
+export const spring = (config, val) => {
+  return {
+    ...presets.noWobble,
+    ...config,
+    val,
+  };
+};
+
+export class Motion extends React.PureComponent {
+  static defaultProps = {
+    style: Object.create(null),
+    config: presets.noWobble,
+  };
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //     const isPlainObject = (obj) => {
+  //         return Object.keys(obj).length === 0;
+  //     };
+
+  //     if (isPlainObject(prevState.style)) {
+  //         return {
+  //             style: nextProps.style
+  //         };
+  //     }
+  //     return null;
+  // }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      style: {},
     };
-}
+  }
 
-let reusedTuple: [number, number] = [0, 0];
-function stepper(secondPerFrame, x, v, destX, k, b, precision) {
-    const Fspring = -k * (x - destX);
-    const Fdamper = -b * v;
-    const a = Fspring + Fdamper;
-    const newV = v + a * secondPerFrame;
-    const newX = x + newV * secondPerFrame;
+  componentDidMount() {
+    this.springAnimation();
+  }
 
-    if (Math.abs(newV) < precision && Math.abs(newX - destX) < precision) {
-        reusedTuple[0] = destX;
-        reusedTuple[1] = 0;
-        return reusedTuple;
-    }
+  springAnimation() {
+    const { style, config } = this.props;
 
-    reusedTuple[0] = newX;
-    reusedTuple[1] = newV;
-    return reusedTuple;
-}
-
-class Montion extends PureComponent {
-    static defaultProps = {
-        defaultStyle: {},
-        style: {},
-        children: noop,
-        onRest: null
+    const frame = 1 / 60;
+    const dampingForce = (damping, v) => damping * v;
+    const acceleration = (
+      displacement = 0,
+      speed = 0,
+      stiffness = config.stiffness,
+      mass = 1,
+      damping = config.damping
+    ) => {
+      return (-stiffness * displacement + dampingForce(damping, speed)) / mass;
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            currentStyle: {}
-        };
-        this.lastTime = 0;
-    }
+    let lastSpeed = 0;
+    let lastPosition = 0;
+    let computedStyle = {};
 
-    componentDidMount() {
-        // 页面加载时候执行动画
-        this.startAnimation();
-    }
+    this.rafId = window.requestAnimationFrame(() => {
+      for (let key in style) {
+        lastSpeed = frame * acceleration(lastPosition, lastSpeed) + lastSpeed;
+        lastPosition =
+          lastPosition + acceleration(lastPosition, lastSpeed) * frame;
 
-    componentWillUnmount() {
-        // 只会清除计划中的raf 正在执行的不会收到影响
-        caf(this.rafId);
-        this.unmounting = true;
-    }
-
-    startAnimation() {
-        const msPerFrame = 1000 / 60;
-        const { onRest, style } = this.props;
-        const hasOwnProperty = (obj, key) => Object.prototype.hasOwnProperty.call(obj, key);
-
-        if (this.unmounting) {
-            return;
+        if (style[key] <= lastPosition) {
+          window.cancelAnimationFrame(this.rafId);
         }
 
-        this.rafId = raf((timestamp) => {
-            if (this.unmounting) {
-                return;
-            }
+        // console.log(lastPosition, lastSpeed);
 
-            if (onRest) {
-                this.onRest();
-                return;
-            }
-
-            this.isAnimating = true;
-
-            if (!this.lastTime) {
-                this.lastTime = timestamp;
-            }
-            this.currentTime = Date.now();
-            this.deltaTime = this.currentTime - this.lastTime;
-
-            // todo
-            let currentFrameCompletion = (this.deltaTime - Math.floor(this.deltaTime / msPerFrame) * msPerFrame) / msPerFrame;
-            let framesToCatchUp = Math.floor(this.deltaTime / msPerFrame);
-
-            let newLastIdealStyle = {};
-            let newCurrentStyle = {};
-
-            for (let key in style) {
-                if (!hasOwnProperty(key)) {
-                    continue;
-                }
-
-                
-                
-            }
+        computedStyle[key] = lastPosition;
+        this.setState({
+          style: computedStyle,
         });
-    }
+      }
 
-    render() {
-        const children = this.props.children(this.state.currentStyle);
-        return children;
-    }
+      this.springAnimation();
+    });
+  }
+
+  render() {
+    const { children } = this.props;
+    const { style } = this.state;
+    return children(style);
+  }
 }
-
-export { Montion, spring };

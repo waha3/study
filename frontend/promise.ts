@@ -1,4 +1,4 @@
-'use strict';
+
 // TODO promise 实现
 const pending = 0;
 const fulfilled = 1;
