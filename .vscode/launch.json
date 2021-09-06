@@ -11,14 +11,14 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/introduction_to_algorithms/greedy_algorithm.ts",
+      "program": "${workspaceFolder}/introduction_to_algorithms/huffman_code.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",
         "-r",
         "tsconfig-paths/register"
       ],
-      "console": "integratedTerminal",
+      // "console": "integratedTerminal",
     },
     {
       "type": "node",
