@@ -11,14 +11,13 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/algorithms/fast_exp.ts",
+      "program": "${workspaceFolder}/introduction_to_algorithms/b_tree.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",
         "-r",
         "tsconfig-paths/register"
       ],
-      // "console": "integratedTerminal",
     },
     {
       "type": "node",
