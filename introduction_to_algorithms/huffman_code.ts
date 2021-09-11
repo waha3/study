@@ -109,7 +109,7 @@ function extract_min(A: huffman_tree_node[]): huffman_tree_node {
   return min;
 }
 
-class huffman_tree_node implements huffman_tree_node {
+class huffman_tree_node implements huffman_tree_node {  
   constructor(key?: string, freq?: number) {
     this.left = null;
     this.right = null;
@@ -126,12 +126,15 @@ function huffman_tree(C: huffman_tree_node[]): huffman_tree_node {
     let node: huffman_tree_node = new huffman_tree_node();
     let x = extract_min(C);
     let y = extract_min(C);
+    // 堆中的节点每次迭代都会少1
+    // 每次合并最小的两个节点（包含叶节点）
     node.left = x;
     node.right = y;
     node.freq = x.freq + y.freq;
 
     min_heap_insert(C, node);
   }
+  // 最后只会剩下节点key最大的一个节点
   return extract_min(C);
 }
 

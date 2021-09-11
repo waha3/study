@@ -162,41 +162,68 @@ function b_tree_insert_nonfull(
  * btree的删除分三个主要情况 （该算法的实现是保证每个节点度至少有t关键字）
  * 1.关键字k在x中，并且x是叶节点，直接删除k
  * 2.关键字k在x中, 并且x是内部节点
- * a. 如果x中在前于k的节点y至少有t个关键字，则找出k在以y为根的子树的前驱k’，递归删除k’，并且在x中用k代替k’
+ * a. 如果x中在前于k的节点y至少有t个关键字，则找出k在以y为根的子树的前驱k’，递归删除k’，并且在x中用k’代替k
+ * b. 对称的如果节点y中少于key个关键字，则检查x中后语k的子节点z，如果z至少有t个关键字，则找出k以z为根的子树中的后继k’，递归删除k',并且在x中用k'替代k
+ * c. 否则y和z中都只含有t-1个关键字，则将k和z全部合并进y，x失去了指向k和指向z的指针，y中现在有2t-1个关键字，释放z并递归的删除k
+ * 3.关键字k不在内部节点x中，确定包含k子树的根x.ci,如果x.ci只有t-1个关键字，必须执行3a，3b来保证降至一个至少含有t个关键字的节点，然后通过x的某个合适的子节点递归而结束
+ * a. 如果x.ci只含有t-1个关键字，但是他相邻的兄弟节点至少有t个关键字，则将x中某个关键字降至x.ci中，将x的左兄弟或者右兄弟的一个关键字升至x，将该兄弟的孩子指针移动到x.ci中，x.ci就增加了一个关键字
+ * b. 如果x.ci以及x.c1的所有相邻节点都包含t-1个关键字，将x.ci与一个兄弟合并，即将x的关键字移动至新合并的节点
  */
 
-function b_tree_presuccessor(x: b_tree_node) {
-  // x.child[0]
-}
-function b_tree_successor() {}
-function b_tree_delete(x: b_tree_node, key: number | string) {
-  // 情况1 x是叶节点
-  if (x.leaf === true) {
-    let i = 0;
-    while (i < x.n && key > x.key[i]) {
-      i = i + 1;
-    }
+// function tree_maximum(x: b_tree_node) {
+//   if (x.leaf === true) {
+//     return key;
+//   }
 
-    if (x.key[i] === key) {
+//   return tree_maximum(x.child[x.n].key[x.n - 1]);
+// }
+
+function b_tree_presuccessor(x: b_tree_node) {
+  while (!x.leaf) {
+    x = x.child[x.child.length - 1];
+  }
+  return x.child[x.child.length - 1];
+}
+
+function b_tree_successor() {}
+// TODO b_tree delete
+function b_tree_delete(T: b_tree_root, x: b_tree_node, key: number | string) {
+  let i = 0;
+  while (i < x.n && key > x.key[i]) {
+    i = i + 1;
+  }
+
+  if (x.key[i] === key) {
+    // 情况1 x是叶节点
+    if (x.leaf === true) {
       for (let j = i; j < x.n; j++) {
         x.key[j] = x.key[j + 1];
       }
       x.key.length = x.key.length - 1;
+      x.n = x.n - 1;
+    } else {
+      // 情况2a
+      let y = x.child[i];
+      if (y.n === T.degree) {
+        let k_ = b_tree_presuccessor(y);
+        // b_tree_delete(T, _k, key);
+      }
     }
-  } else {
-    
   }
 }
 
 function b_tree_delete_with_key(T: b_tree_root, key: number | string) {
   let { x } = b_tree_search(T.root, key);
-  b_tree_delete(x, key);
+  if (x) {
+    return b_tree_delete(T, x, key);
+  }
+  return false;
 }
 
 const T: b_tree_root = {
   root: null,
   // 最小度 最大度 = 2 * 最小度 - 1
-  degree: 3,
+  degree: 2,
 };
 
 b_tree_create(T);
@@ -229,6 +256,6 @@ for (let i of s) {
 }
 
 // b_tree_search(T.root, "D");
-// b_tree_delete_with_key(T, "E");
+b_tree_delete_with_key(T, "E");
 
 export {};
