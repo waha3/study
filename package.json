@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "bin": {
-    "study": "skip_list.js"
+    "study": ""
   },
   "dependencies": {},
   "devDependencies": {

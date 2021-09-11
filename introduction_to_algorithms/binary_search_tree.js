@@ -245,7 +245,7 @@ function tree_successor(x) {
 }
 
 // 前驱
-function tree_presuccessor(x) {
+function tree_predecessor(x) {
   if (x.left !== null) {
     return tree_maximum(x.left);
   }

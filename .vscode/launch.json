@@ -11,7 +11,7 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/introduction_to_algorithms/b_tree.ts",
+      "program": "${workspaceFolder}/introduction_to_algorithms/graph.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",
