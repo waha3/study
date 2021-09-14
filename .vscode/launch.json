@@ -5,6 +5,13 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "golang",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}/the_go_programming_language/ch1/cmd.go"
+    },
+    {
       "name": "typescript",
       "request": "launch",
       "skipFiles": [
@@ -28,5 +35,6 @@
         "<node_internals>/**"
       ]
     },
+    
   ]
 }
