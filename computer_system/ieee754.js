@@ -7,11 +7,11 @@
  * exponent 阶码 对浮点数加权 可能是负数
  * c 语言的单精度值表示
  * 
- * s   exponent         frac
- * 31    31-23          22-0
+ * s   exponent         fiac
+ * 31    30-23          22-0
  * 
  * 双精度值
- * s   exponent         frac
+ * s   exponent         fiac
  * 63    62-52          51-0
  * 
  * （单精度的情况）
