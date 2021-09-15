@@ -202,9 +202,10 @@ func juliaSet(z complex128) color.Color {
 
 func server() {
 	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe("7000", nil))
+	log.Fatal(http.ListenAndServe("0.0.0.0:8000", nil))
 }
 
+// TODO
 func handler(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query()
 	fmt.Println(query)
@@ -229,3 +230,5 @@ func draw_mandelbrot2(w http.ResponseWriter, x, y, scale int) {
 	// }
 	// png.Encode(w, img)
 }
+
+
