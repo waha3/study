@@ -24,6 +24,7 @@ const (
 )
 
 func main() {
+	// 通过时间戳来作为seed初始化伪随机数
 	rand.Seed(time.Now().UTC().UnixNano())
 	if len(os.Args) > 1 && os.Args[1] == "web" {
 		handler := func(w http.ResponseWriter, r *http.Request) {

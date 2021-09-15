@@ -104,6 +104,7 @@ func fetch(url string, ch chan<- string) {
 		return
 	}
 
+	// 从start开始经过多长时间
 	secs := time.Since(start).Seconds()
 	// 在通道上发送一个值（ch <- expression）main 函数接收（<- ch）
 	ch <- fmt.Sprintf("%.2fs %7d %s", secs, nbytes, url)
