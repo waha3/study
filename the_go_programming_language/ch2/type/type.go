@@ -21,7 +21,7 @@ func main() {
 	// plural()
 	// draw_mandelbrot()
 	// draw_juliaSet()
-	server()
+	// server()
 }
 
 // 数据类型分为四大类（基础类型，聚合类型，引用类型，接口类型）
@@ -230,5 +230,3 @@ func draw_mandelbrot2(w http.ResponseWriter, x, y, scale int) {
 	// }
 	// png.Encode(w, img)
 }
-
-
