@@ -18,7 +18,7 @@ class base64 implements base64 {
     const bits = [];
 
     for (let i = 0; i < s.length; i++) {
-      bits.push(...s.codePointAt(i).toString(2).padStart(8, "0"));
+      bits.push(...(s.codePointAt(i) as number).toString(2).padStart(8, "0"));
     }
 
     let mod = bits.length % 3;

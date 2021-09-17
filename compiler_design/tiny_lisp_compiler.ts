@@ -24,6 +24,7 @@ enum ASTNodeType {
   NumberLiteral = "NumberLiteral",
   StringLiteral = "StringLiteral",
   CallExpression = "CallExpression",
+  ExpressionStatement = "ExpressionStatement",
 }
 
 interface Token {
@@ -32,21 +33,18 @@ interface Token {
 }
 
 interface ASTNode {
-  type: Exclude<ASTNodeType, ASTNodeType.Program>;
+  type: ASTNodeType;
   value?: any;
   name?: string;
   params?: ASTNode[];
-}
-
-interface AST {
-  type: ASTNodeType.Program;
-  body: ASTNode[];
+  body?: ASTNode[];
+  _context?: ASTNode[];
 }
 
 type Visitor = {
-  [key in ASTNodeType]: {
-    enter(x: ASTNode | AST, p: ASTNode | null): void;
-    exit(x: ASTNode | AST, p: ASTNode | null): void;
+  [key in ASTNodeType]?: {
+    enter?(x: ASTNode, p: ASTNode | null): void;
+    exit?(x: ASTNode, p: ASTNode | null): void;
   };
 };
 
@@ -184,7 +182,7 @@ function parser(tokens: Token[]) {
         token.type !== TokenType.Parenthese ||
         (token.type === TokenType.Parenthese && token.value !== ")")
       ) {
-        node.params.push(walk());
+        node.params?.push(walk());
         token = tokens[current];
       }
 
@@ -195,46 +193,44 @@ function parser(tokens: Token[]) {
     throw new TypeError(token.type);
   };
 
-  let ast: AST = {
+  let ast: ASTNode = {
     type: ASTNodeType.Program,
     body: new Array<ASTNode>(),
   };
   let current = 0;
 
   while (current < tokens.length) {
-    ast.body.push(walk());
+    ast.body?.push(walk());
   }
   return ast;
 }
 
-// 遍历ast node
-function traverse(ast: AST, visitor: Visitor) {
+// 遍历astnode增加节点回调
+function traverse(ast: ASTNode, visitor: Visitor) {
   var traverseArray = function (array: ASTNode[], parent: ASTNode | null) {
     for (let i of array) {
       traverseNode(i, parent);
     }
   };
 
-  var traverseNode = function (node: ASTNode | AST, parent: ASTNode | null) {
-    let type = node.type;
+  var traverseNode = function (node: ASTNode, parent: ASTNode | null) {
     let methods = visitor[node.type];
+    if (methods && methods.enter) {
+      methods.enter(node, parent);
+    }
 
     switch (node.type) {
       case ASTNodeType.Program:
-        traverseArray(node.body, parent);
+        traverseArray(node.body as ASTNode[], node);
         break;
       case ASTNodeType.CallExpression:
-        traverseArray(node.params, parent);
+        traverseArray(node.params as ASTNode[], node);
         break;
       case ASTNodeType.NumberLiteral:
       case ASTNodeType.StringLiteral:
         break;
       default:
         break;
-    }
-
-    if (methods && methods.enter) {
-      methods.enter(node, parent);
     }
 
     if (methods && methods.exit) {
@@ -245,8 +241,85 @@ function traverse(ast: AST, visitor: Visitor) {
   traverseNode(ast, null);
 }
 
-function transformer() {}
+function transformer(ast: ASTNode) {
+  let newAST: ASTNode = {
+    type: ASTNodeType.Program,
+    body: new Array<ASTNode>(),
+  };
 
+  ast._context = newAST.body;
+  // let current = null;
+
+  traverse(ast, {
+    [ASTNodeType.NumberLiteral]: {
+      enter(node, p) {
+        console.log(node, p);
+        p?._context?.push({
+          type: ASTNodeType.NumberLiteral,
+          value: (<ASTNode>node).value,
+        });
+      },
+    },
+    [ASTNodeType.StringLiteral]: {
+      enter(node, p) {
+        p?._context?.push({
+          type: ASTNodeType.StringLiteral,
+          value: node?.value,
+        });
+      },
+    },
+    [ASTNodeType.CallExpression]: {
+      enter(node, p) {
+        let expression: any = {
+          type: ASTNodeType.CallExpression,
+          callee: {
+            type: "Identifier",
+            name: node.name,
+          },
+          arguments: [],
+        };
+
+        node._context = expression.arguments;
+
+        if (p?.type !== ASTNodeType.CallExpression) {
+          expression = {
+            type: ASTNodeType.ExpressionStatement,
+            expression: expression,
+          };
+        }
+        p?._context?.push(expression);
+      },
+    },
+  });
+  return newAST;
+}
+
+function codeGenerator(node: any): string {
+  switch (node.type) {
+    case ASTNodeType.Program:
+      return node.body?.map(codeGenerator).join("\n");
+    case ASTNodeType.ExpressionStatement:
+      return codeGenerator(node.expression) + ";";
+    case ASTNodeType.CallExpression:
+      return (
+        codeGenerator(node.callee) +
+        "(" +
+        node.arguments.map(codeGenerator).join(", ") +
+        ")"
+      );
+    case "Identifier":
+      return node.name;
+    case ASTNodeType.NumberLiteral:
+      return node.value;
+    case ASTNodeType.StringLiteral:
+      return `"${node.value}"`;
+    default:
+      throw new TypeError(node.type);
+  }
+}
 let str = "(add 200 (subtract 411 22))";
 let tokens = tokenizer(str);
 let ast = parser(tokens);
+let newAST = transformer(ast);
+let code = codeGenerator(newAST);
+console.log(code);
