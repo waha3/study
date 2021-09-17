@@ -46,6 +46,11 @@ import (
 // ! 结构体中的成员变量的顺序对于结构体的同一性是很重要的
 // ! 成员变量首字母是大写，变量是可以导出去的
 // ! 可以匿名
+// ! 空结构体struct{}
+// ! 结构体字面量
+// ! 结构体比较：结构体所有成员变量可以比较，那么结构体可以比较
+// ! 结构体嵌套和匿名成员：可以将一个命名的结构当做另外一个结构体的类型的匿名成员使用
+// ! 结构体的初始化遵循形状类型定义
 
 func main() {
 	// array_test()
@@ -70,7 +75,9 @@ func main() {
 	// test_map()
 	// test_graph()
 	// test_struct()
-	test_treesort()
+	// test_treesort()
+	// test_struct()
+	test_struct2()
 }
 
 func array_test() {
@@ -358,6 +365,10 @@ func test_struct() {
 
 	var employeeOfTheMonth *Employee = &dilbert
 	employeeOfTheMonth.Position += "team player"
+
+	type Point struct{ X, Y int }
+	p := Point{1, 2}
+	fmt.Println(p)
 }
 
 type tree struct {
@@ -401,4 +412,52 @@ func add(t *tree, value int) *tree {
 		t.right = add(t.right, value)
 	}
 	return t
+}
+
+// 匿名结构
+func test_struct2() {
+	type Circle struct {
+		X, Y, Radius int
+	}
+
+	type Wheel struct {
+		X, Y, Radius, Spokes int
+	}
+
+	var w Wheel
+	w.X = 8
+	w.Y = 8
+	w.Radius = 5
+	w.Spokes = 20
+
+	// 重构上面的结构
+	type Point struct {
+		X, Y int
+	}
+
+	type Circle2 struct {
+		Center Point
+		Radius int
+	}
+
+	type Wheel2 struct {
+		Circle2 Circle2
+		Spokes  int
+	}
+
+	var w2 Wheel2
+	w2.Circle2.Center.X = 8
+	w2.Circle2.Radius = 8
+
+	var w3 = Wheel2{Circle2{Point{8, 8}, 5}, 20}
+	var w4 = Wheel2{
+		Circle2: Circle2{
+			Center: Point{X: 8, Y: 8},
+			Radius: 5,
+		},
+		Spokes: 20,
+	}
+	// #符号可以输出成员变量的名字
+	fmt.Printf("%#v\n", w3)
+	fmt.Println(w3 == w4)
 }

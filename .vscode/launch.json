@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/the_go_programming_language/ch2/type.go"
+      "program": "${workspaceFolder}/the_go_programming_language/ch2/type/compound.go"
     },
     {
       "name": "typescript",
@@ -18,19 +18,19 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/introduction_to_algorithms/graph.ts",
+      "program": "${workspaceFolder}/compiler_design/tiny_lisp_compiler.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",
         "-r",
         "tsconfig-paths/register"
-      ],
+      ]
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "node",
-      "program": "${workspaceFolder}/app.js",
+      "name": "js",
+      "program": "${workspaceFolder}/introduction_to_algorithms/sort.js",
       "skipFiles": [
         "<node_internals>/**"
       ]

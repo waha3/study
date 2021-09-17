@@ -19,28 +19,38 @@ var insertion_sort = function (nums) {
 var insertion_sort_with_binary_search = function (nums) {
   // 反向查找的数组是一个排好序的数组 可以用二分查找
   var binarySearch = function (arr, p, r, target) {
-    var m = Math.floor((p + r) / 2);
+    var m = (p + r) >> 1;
+
+    if (p === r) {
+      return m;
+    }
 
     if (target > arr[m]) {
-      binarySearch(arr, m + 1);
-    } else if (target === arr[m]) {
+      binarySearch(arr, m + 1, r, target);
+    } else {
+      binarySearch(arr, p, m - 1, target);
     }
   };
+
   for (let j = 1; j < nums.length; j++) {
     var key = nums[j];
     var i = j - 1;
 
-    while (i >= 0 && nums[i] > key) {
-      nums[i + 1] = nums[i];
-      i = i - 1;
-    }
-    nums[i + 1] = key;
+    var m = binarySearch(arr, i, j, arr[j]);
+    console.log(m);
+
+    // while (i >= m && nums[i] > key) {
+    //   nums[i + 1] = nums[i];
+    //   i = i - 1;
+    // }
+    // nums[i + 1] = key;
   }
 };
 
-// var arr = [10, 2, 7, 1, 5, 3, 9];
+var arr = [10, 2, 7, 1, 5, 3, 9];
 
-// sortArray(arr);
+// insertion_sort(arr);
+insertion_sort_with_binary_search(arr);
 
 // 基于链表的插入
 // https://leetcode-cn.com/problems/insertion-sort-list/
