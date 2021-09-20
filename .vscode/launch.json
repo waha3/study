@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/the_go_programming_language/ch2/type/compound.go"
+      "program": "${workspaceFolder}/algorithms/dynamic.go"
     },
     {
       "name": "typescript",
@@ -18,7 +18,7 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/compiler_design/tiny_lisp_compiler.ts",
+      "program": "${workspaceFolder}/frontend/functional.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",

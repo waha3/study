@@ -248,7 +248,6 @@ function transformer(ast: ASTNode) {
   };
 
   ast._context = newAST.body;
-  // let current = null;
 
   traverse(ast, {
     [ASTNodeType.NumberLiteral]: {
