@@ -221,7 +221,7 @@ function rb_delete(T, z) {
 
 // ps. x(包含了nil节点)是一个双色节点带了一个额外的黑色（继承自被删除的y节点）
 // fixup本质上就是消去删除一个黑色节点对周围节点得影响
-// TODO 还是对于消去双黑的流程有点疑问
+// TODO 对于消去双黑的流程有点疑问
 function rb_delete_fixup(T, x) {
   while (x !== T.root && x.color === "black") {
     if (x === x.p.left) {

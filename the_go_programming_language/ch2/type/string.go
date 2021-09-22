@@ -65,8 +65,8 @@ func string_index() {
 /*
  0xxxxxxx                              0 ~ 127
  110xxxxx 10xxxxxx                     128~2047
- 1110xxxx 110xxxxx 10xxxxxx            2048~65535
- 11110xxx 1110xxxx 110xxxxx 10xxxxxx   65535~0x10ffff
+ 1110xxxx 10xxxxxx 10xxxxxx            2048~65535
+ 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx   65535~0x10ffff
 */
 // 不能通过下边直接访问第n个字符，
 // 优点：代码紧凑，兼容ascii，自同步，前缀编码不会产生歧义，文字符号的字典字节顺序与unicode码点一致

@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
+
+	"github"
 )
 
 // * JSON
@@ -13,7 +16,8 @@ import (
 // ! 每个元素用逗号隔开, 两边用括号括起来
 
 func main() {
-	test_JSON()
+	// test_JSON()
+	github_issues()
 }
 
 func test_JSON() {
@@ -40,4 +44,36 @@ func test_JSON() {
 	}
 	fmt.Printf("%s\n", json_str)
 	fmt.Printf("%s\n", json_str_formated)
+
+	var titles []struct{ Title string }
+	if err := json.Unmarshal(json_str, &titles); err != nil {
+		log.Fatalf("JSON unmarshaling faiiled; %s", err)
+	}
+	fmt.Println(titles)
+}
+
+func github_issues() {
+	result, err := github.SearchIssues(os.Args[1:])
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(result)
+	fmt.Printf("%d issues:\n", result.TotalCount)
+
+	for _, item := range result.Items {
+		fmt.Printf("#%-5d %9.9s %.55s\n", item.Number, item.User.Login, item.Title)
+	}
+}
+
+// ! 文本html模板
+func test_html_template() {
+	const templ = `{{.TotalCount}} issues:
+	{{range .Item}}
+	Number: {{.Number}}
+	User: {{.User.Login}}
+	Title: {{.Title | printf "%.64"}}
+	Age: {{.CreateAt | dayAgo}} days
+	`
 }

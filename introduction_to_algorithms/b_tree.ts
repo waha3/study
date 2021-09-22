@@ -21,20 +21,23 @@ interface b_tree_node {
 }
 
 interface b_tree_root {
-  root: b_tree_node;
+  root: b_tree_node | null;
   degree: number;
 }
 
 class b_tree_node implements b_tree_node {
   constructor() {
-    this.n = null;
+    this.n = 0;
     this.key = [];
-    this.leaf = null;
+    this.leaf = false;
     this.child = [];
   }
 }
 
-function b_tree_search(x: b_tree_node, key: number | string) {
+function b_tree_search(
+  x: b_tree_node,
+  key: number | string
+): { i: number; x: b_tree_node } | null {
   let i = 0;
 
   while (i < x.n && key > x.key[i]) {
@@ -112,7 +115,7 @@ function b_tree_split_child(T: b_tree_root, x: b_tree_node, i: number) {
 }
 
 function b_tree_insert(T: b_tree_root, k: number | string) {
-  let r = T.root;
+  let r = T.root as b_tree_node;
   // 这个算法和可视化网站的算法不一样（可视化网站是插入后达到最大度直接分裂）
   // 节点的数量达到了最大度的时候要分解
   if (r.n === 2 * T.degree - 1) {
@@ -213,7 +216,11 @@ function b_tree_delete(T: b_tree_root, x: b_tree_node, key: number | string) {
 }
 
 function b_tree_delete_with_key(T: b_tree_root, key: number | string) {
-  let { x } = b_tree_search(T.root, key);
+  if (T.root === null) {
+    return false;
+  }
+
+  let { x } = b_tree_search(T.root, key) as { x: b_tree_node };
   if (x) {
     return b_tree_delete(T, x, key);
   }

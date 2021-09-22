@@ -18,7 +18,7 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/frontend/functional.ts",
+      "program": "${workspaceFolder}/introduction_to_algorithms/trie_tree.ts",
       "runtimeArgs": [
         "-r",
         "ts-node/register",
