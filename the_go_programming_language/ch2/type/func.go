@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"math"
 	"net/http"
 	"os"
 	"strings"
@@ -50,6 +51,28 @@ import (
 // 可以作为闭包
 // 匿名函数递归时需要先給其赋值
 
+// ! 捕获迭代变量
+// 在循环里创建的变量共享相同的位置，而不是固定的值
+// 需要在函数内部声明一个临时变量 当有异步任务的时候
+
+// ! 变长函数
+// 变长函数调用是 可以有可变的参数个数，如fmt.Printf()
+// 在参数列表的最后有省略号...
+// 参数是个slice
+// 变长函数类型和普通带有slice类型是不一样的 ...int, []int
+
+// ! 延迟函数调用
+// defer语句 函数和参数表达式会在语句执行时求值，实际的调用推迟到包含defer语句函数结束后执行
+// 可以用来调试复杂的函数，在入口和出口的设置调试的行为
+
+// ! 宕机
+// 数组越界，访问空指针，异常退出会留一下一条日志，goroutine会留下一条函数调用栈信息
+// 宕机函数panic
+// 宕机发生时，所有延迟函数都倒序执行
+
+// ! 恢复
+// recover
+
 func main() {
 	// if err := waitForServer("https://www.bilibili.co/"); err != nil {
 	// 	fmt.Fprintf(os.Stderr, "site is down: %v\n", err)
@@ -58,7 +81,10 @@ func main() {
 
 	// test_EOF()
 	// testStringMap()
-	test_anonymousfn()
+	// test_anonymousfn()
+	// test_dynamic_param_fn()
+	// fmt.Println(max(1, 2, 3, 4))
+	bigSlowOperation()
 }
 
 func waitForServer(url string) error {
@@ -117,5 +143,54 @@ func squares() func() int {
 	return func() int {
 		x++
 		return x * x
+	}
+}
+
+func test_dynamic_param_fn() {
+	fmt.Println(sum(1, 2, 3))
+	fmt.Println(sum([]int{1, 2, 3}...))
+
+}
+
+func sum(vals ...int) int {
+	total := 0
+	for _, val := range vals {
+		total += val
+	}
+	return total
+}
+
+func max(vals ...int) float64 {
+	max := math.Inf(-1)
+	fmt.Printf("max: %f", max)
+	fmt.Println(max)
+	for _, val := range vals {
+		if float64(val) > max {
+			max = float64(val)
+		}
+	}
+	return max
+}
+
+func ReadFile(filename string) ([]byte, error) {
+	f, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+	return io.ReadAll(f)
+}
+
+func bigSlowOperation() {
+	defer trace("bigslowOperation")()
+	fmt.Printf("do something\n")
+	time.Sleep(10 * time.Second)
+}
+
+func trace(msg string) func() {
+	start := time.Now()
+	log.Printf("enter %s", msg)
+	return func() {
+		log.Printf("exit %s (%s)", msg, time.Since(start))
 	}
 }
