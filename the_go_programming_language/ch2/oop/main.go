@@ -4,5 +4,5 @@ package main
 // 方法声明
 // 接收者不适用this，self
 func main() {
-	p := Point(1, 2)
+	// p := Point(1, 2)
 }
