@@ -1,3 +1,4 @@
+export {}
 // https://github.com/jamiebuilds/the-super-tiny-compiler/blob/master/the-super-tiny-compiler.js
 /**
  * * 编译器的三个初始阶段 parsing transformation code generation

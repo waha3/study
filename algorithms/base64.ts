@@ -5,11 +5,7 @@
  * 不能被3整除 用=号补足
  */
 
-interface base64 {
-  alphabet: string;
-}
-
-class base64 implements base64 {
+class base64  {
   private static alphabet =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

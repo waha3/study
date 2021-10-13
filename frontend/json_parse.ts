@@ -1,14 +1,10 @@
-function json_parse(json_str: string) {
-  var at: number;
-  var current_char: string;
-  var escape = {
-    '"': '"',
-    "\\": "\\",
-  };
-  var text: string;
 
 
-  
+enum JSONType {
+  string = "string",
+  number = "number",
+  array = "array",
+  object = "object",
 }
 
 function error(at: number, message: string, text: string): Error {
@@ -20,15 +16,24 @@ function error(at: number, message: string, text: string): Error {
   };
 }
 
-// c是否匹配当前字符
-function next(c: string, current_char) {
-  if (c && c !== current_char) {
-    // error(`expected ${c} instead of ${current_char}`)
+function tokenizer(input: string) {
+  let current = 0;
+  let tokens = [];
+
+  while (current < input.length) {
+    let ch = input[current];
+
+    // 解析数字类型
+    if (/[0-9]/.test(ch)) {
+      while (/[0-9]/.test(ch)) {
+         
+      }
+    }
+
+    // 解析字符串类型
+
+    // 解析对象
+
+    // 解析数组
   }
-
-  // 获取下一个字符
-  
 }
-
-// 解析数字类型
-function number() {}

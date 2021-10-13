@@ -30,7 +30,7 @@
       "type": "node",
       "request": "launch",
       "name": "js",
-      "program": "${workspaceFolder}/introduction_to_algorithms/sort.js",
+      "program": "${workspaceFolder}/frontend/map.js",
       "skipFiles": [
         "<node_internals>/**"
       ]

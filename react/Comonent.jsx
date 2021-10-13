@@ -1,5 +1,7 @@
 import React from "react";
 
+const ThemeContext = React.createContext('light');
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -7,7 +9,17 @@ class App extends React.Component {
       counter: 0,
       inputVal: "",
     };
+    this.appRef = React.createRef()
   }
+
+  static defaultProps = {
+    theme: 'red'
+  }
+
+  componentDidMount() {
+    console.log(this.appRef.current)
+  }
+
 
   handleClick = (type) => {
     console.log(type);
@@ -29,7 +41,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="App" ref={this.appRef}>
         <header className="App-header">
           <h1 className="App-title">Welcome to React</h1>
         </header>

@@ -1,5 +1,6 @@
 import React from "react";
 import Reconciler from "react-reconciler";
+import ReactDOM from "react-dom";
 import { App } from "./Comonent";
 
 const NO_CONTEXT = {};
@@ -186,6 +187,12 @@ function render(reactElement, domElement, callback) {
   );
 }
 
-render(<App name="hello" />, document.getElementById("app"), () => {
-  console.log("render callback");
+console.log(ReactDOM)
+
+// ReactDOM.createRoot(document.getElementById("app")).render(
+//   <App name="hello" />
+// );
+
+ReactDOM.render(<App name="hello" />, document.getElementById("app"), (ins) => {
+  console.log("render callback", ins);
 });
