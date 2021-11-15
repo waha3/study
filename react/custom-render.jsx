@@ -187,7 +187,7 @@ function render(reactElement, domElement, callback) {
   );
 }
 
-console.log(ReactDOM)
+// console.log(ReactDOM);
 
 // ReactDOM.createRoot(document.getElementById("app")).render(
 //   <App name="hello" />

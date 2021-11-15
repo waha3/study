@@ -9,7 +9,7 @@
       "type": "go",
       "request": "launch",
       "mode": "auto",
-      "program": "${workspaceFolder}/the_go_programming_language/ch2/crawl/main.go"
+      "program": "${workspaceFolder}/the_go_programming_language/ch2/oop/main.go"
     },
     {
       "name": "typescript",
@@ -18,7 +18,7 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      "program": "${workspaceFolder}/introduction_to_algorithms/trie_tree.ts",
+      "program": "${workspaceFolder}/frontend/promise.js",
       "runtimeArgs": [
         "-r",
         "ts-node/register",
@@ -30,7 +30,7 @@
       "type": "node",
       "request": "launch",
       "name": "js",
-      "program": "${workspaceFolder}/frontend/map.js",
+      "program": "${workspaceFolder}/frontend/promise.js",
       "skipFiles": [
         "<node_internals>/**"
       ]

@@ -1,3 +1,7 @@
+
+
+
+
 /**
 *func (Function): 要防抖动的函数。
 [wait=0] (number): 需要延迟的毫秒数。
@@ -8,4 +12,32 @@
 **/
 
 
-var debounce = (fn, option) => {}
+var debounce = function (fn, wait) {
+  let timer;
+  let context = this;
+
+  return function (...args) {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null
+    }
+
+    timer = setTimeout(function () {
+      fn.apply(context, args);
+    }, wait);
+
+    
+  };
+};
+
+window.onresize = debounce(function (event) {
+  console.log(event);
+}, 1000);
+
+
+var throttle = function(fn, options) {
+  let startTime = performance.now();
+  let context = this;
+
+  return function
+}
