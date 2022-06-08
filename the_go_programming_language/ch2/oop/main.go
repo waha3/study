@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"oop/intset"
+	"oop/interface"
+	"sort"
 )
 
 // ! 面向对象
@@ -50,13 +51,17 @@ func main() {
 	// q.ScaleBy(2)
 	// fmt.Println(p.Distance(q.Point))
 
-	var x, y intset.Inset
-	x.Add(1)
-	x.Add(144)
-	x.Add(9)
-	fmt.Println(x)
+	// var x, y intset.Inset
+	// x.Add(1)
+	// x.Add(144)
+	// x.Add(9)
+	// fmt.Println(x)
 
-	y.Add(9)
-	y.Add(42)
+	// y.Add(9)
+	// y.Add(42)
 	// fmt.Println(y.String())
+
+	unsortArr := []int{3, 14, 2, 1}
+	sort.Sort(_interface.StringSlice(unsortArr))
+	fmt.Println(unsortArr)
 }
