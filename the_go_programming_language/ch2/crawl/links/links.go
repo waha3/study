@@ -22,6 +22,7 @@ func Extract(url string) ([]string, error) {
 
 	doc, err := html.Parse(resp.Body)
 	resp.Body.Close()
+
 	if err != nil {
 		return nil, fmt.Errorf("parsing error %s as html: %v", url, err)
 	}

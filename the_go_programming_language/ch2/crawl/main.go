@@ -13,7 +13,8 @@ import (
 
 func main() {
 	// breadthFirst(crawl, os.Args[1:])
-	server()
+	// server()
+	run()
 }
 
 func server() {
@@ -112,4 +113,34 @@ func fetch(url string) (filename string, n int64, err error) {
 		err = closeErr
 	}
 	return local, n, err
+}
+
+// 并发的爬虫
+func concurrencyCrawl(url string) []string {
+	fmt.Println(url)
+	list, err := links.Extract(url)
+	if err != nil {
+		log.Print(err)
+	}
+	return list
+}
+
+func run() {
+	worklist := make(chan []string)
+
+	go func() {
+		worklist <- os.Args[1:]
+	}()
+
+	seen := make(map[string]bool)
+	for list := range worklist {
+		for _, link := range list {
+			if !seen[link] {
+				seen[link] = true
+				go func(link string) {
+					worklist <- crawl(link)
+				}(link)
+			}
+		}
+	}
 }
