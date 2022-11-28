@@ -4,3 +4,4 @@ dist
 cmake-build-debug
 bin
 package-lock.json
+target
