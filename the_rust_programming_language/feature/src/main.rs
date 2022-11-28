@@ -254,19 +254,25 @@ fn main() {
   // }
 
   // ! if let 简洁控制流
-  let config_max = Some(3u8);
+  // let config_max = Some(3u8);
 
   // match config_max {
   //   Some(max) => println!("max is {}", max),
   //   _ => (),
   // }
 
-  if let Some(max) = config_max {
-    println!(
-      "
-    max is {max}."
-    )
-  }
+  // if let Some(max) = config_max {
+  //   println!(
+  //     "
+  //   max is {max}."
+  //   )
+  // }
+
+  // ! 错误处理
+  // ! 可恢复的（recoverable）和 不可恢复的（unrecoverable）错误
+
+  // ! 用 panic! 处理不可恢复的错误
+  panic!("crash and burn");
 }
 
 // fn take_ownership(some_string: String) {

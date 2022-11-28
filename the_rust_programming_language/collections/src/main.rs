@@ -1,4 +1,4 @@
-use std::{fmt::Debug, vec};
+use std::collections::HashMap;
 
 fn main() {
   // ! 使用 Vector 储存列表
@@ -75,8 +75,82 @@ fn main() {
   // println!("len is {}", hello.len());
 
   // ! 更新字符串
-  let s1 = String::from("hello");
-  let s2 = String::from(" world");
-  let s3 = s1 + &s2;
-  println!("s3 is {}", s3);
+
+  // let mut s = String::from("hello");
+  // let s1 = "aaaa";
+  // s.push_str(" world");
+  // s.push_str(s1);
+  // s.push('在');
+  // println!("s is {}, s1 is {}", s, s1);
+
+  // ! 使用 + 运算符或 format! 宏拼接字符串
+  // let s1 = String::from("hello");
+  // let s2 = String::from(" world");
+  // let s3 = s1 + &s2;
+  // println!("s3 is {}", s3);
+
+  // let s1 = String::from("tic");
+  // let s2 = String::from("tac");
+  // let s3 = String::from("toe");
+  // let s = format!("{}-{}-{}", s1, s2, s3);
+  // println!("s is {}", s);
+
+  // ! 索引字符串
+  // let s = String::from("hello");
+  // let h = &s[1];
+
+  // ! 字节、标量值和字形簇
+
+  // ! 字符串 slice
+  // let hello = "Здравствуйте";
+  // let s = &hello[0..3];
+  // println!("s is {}", s);
+
+  // ! 遍历字符串的方法
+  // let s = "नमस्ते";
+
+  // for c in s.chars() {
+  //   println!("{}", c);
+  // }
+
+  // for b in s.bytes() {
+  //   println!("{}", b);
+  // }
+
+  // ! 使用 Hash Map 储存键值对
+  // let mut scores = HashMap::new();
+  // scores.insert("aa", 1);
+
+  // let teams = vec![String::from("yellow"), String::from("blue")];
+  // let scores = vec![10, 50];
+  // let res: HashMap<_, _> = teams.into_iter().zip(scores.into_iter()).collect();
+  // println!("res is {:?}", res);
+
+  // ! 哈希 map 和所有权
+
+  // ! 更新哈希 map
+
+  // ! 覆盖一个值
+  // let mut scores = HashMap::new();
+  // scores.insert(String::from("blue"), 11);
+  // scores.insert(String::from("blue"), 22);
+  // println!("scores is {:?}", {});
+
+  // ! 只在键没有对应值时插入
+  // let mut scores = HashMap::new();
+  // scores.insert(String::from("blue"), 11);
+  // scores.entry(String::from("yellow")).or_insert(100);
+  // scores.entry(String::from("blue")).or_insert(200);
+  // println!("scores is {:?}", scores);
+
+  // ! 根据旧值更新一个值
+  // let s1 = "hello world wonderful world";
+  // let mut map = HashMap::new();
+  // for s in s1.split_whitespace() {
+  //   let count = map.entry(s).or_insert(0);
+  //   *count += 1;
+  // }
+  // println!("map is {:?}", map);
+
+  // ! 哈希函数
 }
