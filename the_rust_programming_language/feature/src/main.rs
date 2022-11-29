@@ -1,4 +1,8 @@
 // use std::clone;
+use std::fs::File;
+// use std::io::ErrorKind;
+use std::io::{self, Read};
+use std::net::IpAddr;
 
 fn main() {
   // let x = 10;
@@ -272,7 +276,69 @@ fn main() {
   // ! 可恢复的（recoverable）和 不可恢复的（unrecoverable）错误
 
   // ! 用 panic! 处理不可恢复的错误
-  panic!("crash and burn");
+  // panic!("crash and burn");
+
+  // ! 用 Result 处理可恢复的错误
+  // let f = File::open("../rustfmt.toml");
+  // let f = match f {
+  //   Ok(file) => file,
+  //   Err(err) => panic!("file cause some err {:?}", err),
+  // };
+
+  // ! 匹配不同的错误
+  // let f = File::open("hello.text");
+  // let f = match f {
+  //   Ok(file) => file,
+  //   Err(err) => match err.kind() {
+  //     ErrorKind::NotFound => match File::create("hello.text") {
+  //       Ok(fc) => fc,
+  //       Err(e) => panic!("err is {:?}", e),
+  //     },
+  //     other_error => panic!("{:?} happen", other_error),
+  //   },
+  // };
+
+  // let f = File::open("hello.text").unwrap_or_else(|error| {
+  //   if error.kind() == ErrorKind::NotFound {
+  //     File::create("hello.text").unwrap_or_else(|error| {
+  //       panic!("create happen {:?}", error);
+  //     })
+  //   } else {
+  //     panic!("open happen {:?}", error);
+  //   }
+  // });
+
+  // ! 失败时 panic 的简写：unwrap 和 expect
+  // let f = File::open("hello.text").unwrap();
+  // let f1 = File::open("hello.text").expect("file don not exist");
+
+  // ! 传播错误
+  // let s = read_username_from_file();
+  // println!("s is {:?}", s);
+
+  // ! 传播错误的简写：? 运算符
+
+  // ! 要不要 panic!
+
+  // let home: IpAddr = "127.0.0.1".parse().unwrap();
+
+  pub struct Guess {
+    value: i32,
+  }
+
+  impl Guess {
+    pub fn new(value: i32) -> Guess {
+      if value < 0 || value > 100 {
+        panic!("the guess should between 0 and 100, but got {}", value);
+      }
+
+      Guess { value }
+    }
+
+    pub fn value(&self) -> i32 {
+      self.value
+    }
+  }
 }
 
 // fn take_ownership(some_string: String) {
@@ -358,3 +424,21 @@ fn main() {
 // }
 
 // fn reroll() {}
+
+fn read_username_from_file() -> Result<String, io::Error> {
+  // let f = File::open("hello.txt");
+  // let mut f = match f {
+  //   Ok(file) => file,
+  //   Err(err) => return Err(err),
+  // };
+
+  // let mut s = String::new();
+  // match f.read_to_string(&mut s) {
+  //   Ok(_) => Ok(s),
+  //   Err(e) => Err(e),
+  // }
+
+  let mut s = String::new();
+  File::open("hello.txt")?.read_to_string(&mut s)?;
+  Ok(s)
+}
