@@ -322,23 +322,44 @@ fn main() {
 
   // let home: IpAddr = "127.0.0.1".parse().unwrap();
 
-  pub struct Guess {
-    value: i32,
-  }
+  // pub struct Guess {
+  //   value: i32,
+  // }
 
-  impl Guess {
-    pub fn new(value: i32) -> Guess {
-      if value < 0 || value > 100 {
-        panic!("the guess should between 0 and 100, but got {}", value);
-      }
+  // impl Guess {
+  //   pub fn new(value: i32) -> Guess {
+  //     if value < 0 || value > 100 {
+  //       panic!("the guess should between 0 and 100, but got {}", value);
+  //     }
 
-      Guess { value }
-    }
+  //     Guess { value }
+  //   }
 
-    pub fn value(&self) -> i32 {
-      self.value
-    }
-  }
+  //   pub fn value(&self) -> i32 {
+  //     self.value
+  //   }
+  // }
+
+  // ! 泛型、Trait 和生命周期
+
+  // ! 提取函数来减少重复
+
+  // ! 结构体定义中的泛型
+  // struct Point<T> {
+  //   x: T,
+  //   y: T,
+  // }
+
+  // let integer = Point { x: 10, y: 10 };
+
+  // let str = Point { x: "aa", y: "bb" };
+
+  // struct Point2<T, U> {
+  //   x: T,
+  //   y: U,
+  // }
+
+  // ! 结构体定义中的泛型
 }
 
 // fn take_ownership(some_string: String) {
@@ -425,20 +446,30 @@ fn main() {
 
 // fn reroll() {}
 
-fn read_username_from_file() -> Result<String, io::Error> {
-  // let f = File::open("hello.txt");
-  // let mut f = match f {
-  //   Ok(file) => file,
-  //   Err(err) => return Err(err),
-  // };
+// fn read_username_from_file() -> Result<String, io::Error> {
+//   // let f = File::open("hello.txt");
+//   // let mut f = match f {
+//   //   Ok(file) => file,
+//   //   Err(err) => return Err(err),
+//   // };
 
-  // let mut s = String::new();
-  // match f.read_to_string(&mut s) {
-  //   Ok(_) => Ok(s),
-  //   Err(e) => Err(e),
-  // }
+//   // let mut s = String::new();
+//   // match f.read_to_string(&mut s) {
+//   //   Ok(_) => Ok(s),
+//   //   Err(e) => Err(e),
+//   // }
 
-  let mut s = String::new();
-  File::open("hello.txt")?.read_to_string(&mut s)?;
-  Ok(s)
-}
+//   let mut s = String::new();
+//   File::open("hello.txt")?.read_to_string(&mut s)?;
+//   Ok(s)
+// }
+
+// fn largest<T>(list: &[T]) -> T {
+//   let mut largest = list[0];
+//   for &item in list {
+//     if item > largest {
+//       largest = item;
+//     }
+//   }
+//   return largest;
+// }
