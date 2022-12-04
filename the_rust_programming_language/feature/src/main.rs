@@ -1,8 +1,10 @@
+// use std::{fmt::Debug, fmt::Display};
 // use std::clone;
-use std::fs::File;
+// use std::fs::File;
 // use std::io::ErrorKind;
-use std::io::{self, Read};
-use std::net::IpAddr;
+// use std::io::{self, Read};
+// use std::net::IpAddr;
+// use feature::{NewArticle, Summary, Tweet};
 
 fn main() {
   // let x = 10;
@@ -360,6 +362,92 @@ fn main() {
   // }
 
   // ! 结构体定义中的泛型
+
+  // ! 定义 trait
+
+  // ! 为类型实现 trait
+
+  // let tweet = Tweet {
+  //   username: String::from("horse_ebooks"),
+  //   content: String::from("of course, as you probably already know, people"),
+  //   reply: false,
+  //   retweet: false,
+  // };
+
+  // println!("tweet is {}", tweet.summarize());
+
+  // let article = NewArticle {
+  //   headline: String::from("hello world"),
+  //   location: String::from("shanghai"),
+  //   author: String::from("waha"),
+  //   content: String::from("so so you think you can tell"),
+  // };
+
+  // println!("default trait is {}", article.summarize());
+
+  // let tweet = Tweet {
+  //   username: String::from("horse_ebooks"),
+  //   content: String::from("of course, as you probably already know, people"),
+  //   reply: false,
+  //   retweet: false,
+  // };
+
+  // println!("1 new tweet: {}", tweet.summarize());
+
+  // ! trait 作为参数
+
+  // ! Trait Bound
+
+  // ! 生命周期确保引用有效
+
+  // {
+  //   let r;
+  //   {
+  //     let x = 5;
+  //     r = &x;
+  //   }
+
+  //   print!("r is {}", r);
+  // }
+
+  // ! 借用检查器
+
+  // {
+  //   let x = 5;
+  //   let r = &x;
+  //   println!("r is {}", r);
+  // }
+
+  // ! 函数中的泛型生命周期
+  // let string1 = String::from("hello world");
+  // let string2 = "aaaa";
+  // let result = longest(string1.as_str(), string2);
+  // println!("result is {}", result);
+
+  // !  &i32        // 引用
+  // !  &'a i32     // 带有显式生命周期的引用
+  // ! &'a mut i32 // 带有显式生命周期的可变引用
+
+  // let string1 = String::from("hello");
+  // {
+  //   let string2 = String::from("xyz");
+  //   let result = longest(string1.as_str(), &string2);
+  //   println!("The longest string is {}", result);
+  // }
+
+  // ! 结构体定义中的生命周期注解
+  // #[derive(Debug)]
+  // struct ImportantExcerpt<'a> {
+  //   part: &'a str,
+  // }
+  // let novel = String::from("Call me Ishmael. Some years ago...");
+  // let first_sentence = novel.split('.').next().expect("has no '.'");
+  // let i = ImportantExcerpt {
+  //   part: first_sentence,
+  // };
+  // println!("aa {:?}", i.part);
+
+
 }
 
 // fn take_ownership(some_string: String) {
@@ -472,4 +560,64 @@ fn main() {
 //     }
 //   }
 //   return largest;
+// }
+
+// fn largest<T>(list: &[T]) -> T
+// where
+//   T: PartialOrd + Copy,
+// {
+//   let mut largest = list[0];
+//   for &item in list {
+//     if item > largest {
+//       largest = item;
+//     }
+//   }
+//   return largest;
+// }
+
+// pub fn notify(item: &impl Summary) {
+//   println!("breaking news! {}", item.summarize())
+// }
+
+// pub fn notify<T: Summary>(item: &T) {
+//   println!("Breaking news! {}", item.summarize());
+// }
+
+// // ! 通过 + 指定多个 trait bound
+// pub fn notify1(item: &(impl Summary + Display)) {}
+
+// pub fn notify2<T: Summary + Display>(item: &T) {}
+
+// // ! 通过 + 指定多个 trait bound
+// pub fn some_funtion<T: Clone + Display, U: Clone + Debug>(t: &T, u: &U) -> i32 {}
+// pub fn some_funtion1<T, U>(t: &T, u: &U) -> i32
+// where
+//   T: Display + Clone,
+//   U: Clone + Debug,
+// {
+// }
+
+// // ! 返回实现了 trait 的类型
+// pub fn return_summariable() -> impl Summary {
+//   Tweet {
+//     username: String::from("111"),
+//     content: String::from("aaaa"),
+//     reply: String::from("111"),
+//     retweet: false,
+//   }
+// }
+
+// ! 使用 trait bound 有条件地实现方法
+
+// fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+//   if x.len() > y.len() {
+//     x
+//   } else {
+//     y
+//   }
+// }
+
+// fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+//   let result = String::from("hello");
+//   result.as_str()
 // }
