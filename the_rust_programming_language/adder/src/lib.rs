@@ -12,6 +12,8 @@
 
 #[cfg(test)]
 mod tests {
+  use super::*;
+
   // #[test]
   // fn it_works() {
   //   let result = 2 + 2;
@@ -29,7 +31,6 @@ mod tests {
   // }
 
   // ! 使用 assert! 宏来检查结果
-  // use super::*;
 
   // #[test]
   // fn larger_can_hold_small() {
@@ -71,15 +72,31 @@ mod tests {
   //   }
   // }
 
-
   // ! 控制测试如何运行
 
   // ! 并行或连续的运行测试
+  // cargo test -- --test-threads=1
+
+  // ! 显示函数输出
+
+  // ! 通过指定名字来运行部分测试
+  #[test]
+  fn add_two_and_two() {
+    assert_eq!(4, add_two(2));
+  }
+
+  // ! 忽略某些测试
+  #[test]
+  #[ignore]
+  fn expensive_test() {}
+
+
+  // ! 二进制 crate 的集成测试
 }
 
-// pub fn add_two(a: i32) -> i32 {
-//   a + 2
-// }
+pub fn add_two(a: i32) -> i32 {
+  a + 2
+}
 
 // struct Guess {
 //   value: i32,

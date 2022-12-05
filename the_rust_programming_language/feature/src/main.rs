@@ -435,6 +435,9 @@ fn main() {
   //   println!("The longest string is {}", result);
   // }
 
+  // ! 静态生命周期
+  let s: &'static str = "I have a static lifetime.";
+
   // ! 结构体定义中的生命周期注解
   // #[derive(Debug)]
   // struct ImportantExcerpt<'a> {
@@ -446,8 +449,6 @@ fn main() {
   //   part: first_sentence,
   // };
   // println!("aa {:?}", i.part);
-
-
 }
 
 // fn take_ownership(some_string: String) {
