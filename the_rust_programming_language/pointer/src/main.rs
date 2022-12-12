@@ -156,10 +156,14 @@ fn main() {
   // let y = &mut x;
 
   // ! 结合 Rc<T> 和 RefCell<T> 来拥有多个可变数据所有者
+  #[derive(Debug)]
   enum List {
     Cons(Rc<RefCell<i32>>, Rc<List>),
     Nil,
   }
+
+  let value = Rc::new(RefCell::new(5));
+  let a = Rc::new(Cons(Rc::clone(*value), Rc::new(Nil)));
 
   // ! 引用循环与内存泄漏
 
