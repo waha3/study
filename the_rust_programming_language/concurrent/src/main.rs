@@ -1,6 +1,8 @@
-use std::sync::mpsc;
-use std::thread;
-use std::time::Duration;
+use std::sync::{mpsc, Arc};
+use std::thread::{self, JoinHandle};
+// use std::time::Duration;
+use std::rc::Rc;
+use std::sync::Mutex;
 
 fn main() {
   // ! 使用线程同时运行代码
@@ -90,38 +92,114 @@ fn main() {
   // }
 
   // ! 通过克隆发送者来创建多个生产者
-  let (tx, rx) = mpsc::channel();
-  let tx_1 = tx.clone();
+  // let (tx, rx) = mpsc::channel();
+  // let tx_1 = tx.clone();
 
-  thread::spawn(move || {
-    let v = vec![
-      String::from("hi"),
-      String::from("from"),
-      String::from("the"),
-      String::from("thread"),
-    ];
+  // thread::spawn(move || {
+  //   let v = vec![
+  //     String::from("hi"),
+  //     String::from("from"),
+  //     String::from("the"),
+  //     String::from("thread"),
+  //   ];
 
-    for i in v {
-      tx_1.send(i).unwrap();
-      thread::sleep(Duration::from_millis(1));
-    }
-  });
+  //   for i in v {
+  //     tx_1.send(i).unwrap();
+  //     thread::sleep(Duration::from_millis(1));
+  //   }
+  // });
 
-  thread::spawn(move || {
-    let v = vec![
-      String::from("hi"),
-      String::from("from"),
-      String::from("the"),
-      String::from("thread"),
-    ];
+  // thread::spawn(move || {
+  //   let v = vec![
+  //     String::from("hi"),
+  //     String::from("from"),
+  //     String::from("the"),
+  //     String::from("thread"),
+  //   ];
 
-    for i in v {
-      tx.send(i).unwrap();
-      thread::sleep(Duration::from_millis(1));
-    }
-  });
+  //   for i in v {
+  //     tx.send(i).unwrap();
+  //     thread::sleep(Duration::from_millis(1));
+  //   }
+  // });
 
-  for j in rx {
-    println!("j is {}", j);
-  }
+  // for j in rx {
+  //   println!("j is {}", j);
+  // }
+
+  // ! 共享状态并发
+  // ! 互斥器一次只允许一个线程访问数据
+  // * 互斥器（mutex）是 mutual exclusion 的缩写，也就是说，任意时刻，其只允许一个线程访问某些数据
+  // * 互斥器（mutex）是 mutual exclusion 的缩写，也就是说，任意时刻，其只允许一个线程访问某些数据。为了访问互斥器中的数据，线程首先需要通过获取互斥器的 锁（lock）来表明其希望访问数据。
+  // * 锁是一个作为互斥器一部分的数据结构，它记录谁有数据的排他访问权。因此，我们描述互斥器为通过锁系统 保护（guarding）其数据
+
+  // ! Mutex<T>的 API
+
+  // let v = Mutex::new(5);
+  // {
+  //   let mut num = v.lock().unwrap();
+  //   *num = 10;
+  // }
+  // println!("v is {:?}", v);
+
+  // ! 在线程间共享 Mutex<T>
+  // let counter = Mutex::new(5);
+  // let mut handles: Vec<JoinHandle<()>> = vec![];
+  // for _ in 0..10 {
+  //   let handle = thread::spawn(move || {
+  //     let mut m = counter.lock().unwrap();
+  //     *m += 1;
+  //   });
+  //   handles.push(handle);
+  // }
+
+  // for handle in handles {
+  //   handle.join().unwrap();
+  // }
+  // println!("counter is {}", *counter.lock().unwrap());
+
+  // ! 多线程和多所有权
+  // let counter = Rc::new(Mutex::new(0));
+  // let mut handles: Vec<JoinHandle<()>> = vec![];
+  // for _ in 0..10 {
+  //   let counter = Rc::clone(&counter);
+  //   let handle = thread::spawn(move || {
+  //     let mut m = counter.lock().unwrap();
+  //     *m += 1;
+  //   });
+  //   handles.push(handle);
+  // }
+
+  // for handle in handles {
+  //   handle.join().unwrap();
+  // }
+  // println!("counter is {}", *counter.lock().unwrap());
+
+  // ! 原子引用计数 Arc<T>
+  // let counter = Arc::new(Mutex::new(0));
+  // let mut handles: Vec<JoinHandle<()>> = vec![];
+  // for _ in 0..10 {
+  //   let counter = Arc::clone(&counter);
+  //   let handle = thread::spawn(move || {
+  //     let mut m = counter.lock().unwrap();
+  //     *m += 1;
+  //   });
+  //   handles.push(handle);
+  // }
+
+  // for handle in handles {
+  //   handle.join().unwrap();
+  // }
+  // println!("counter is {}", *counter.lock().unwrap());
+
+
+  // ! 使用 Sync 和 Send trait 的可扩展并发
+  // * 两个并发概念是内嵌于语言中的：std::marker 中的 Sync 和 Send trait
+
+  // ! 通过 Send 允许在线程间转移所有权
+  // * Send 标记 trait 表明实现了 Send 的类型值的所有权可以在线程间传送。几乎所有的 Rust 类型都是Send 的，不过有一些例外，包括 Rc<T>
+  // * 任何完全由 Send 的类型组成的类型也会自动被标记为 Send。几乎所有基本类型都是 Send 的，除了第十九章将会讨论的裸指针（raw pointer）
+
+  // ! Sync 允许多线程访问
+  // ! 手动实现 Send 和 Sync 是不安全的
 }
