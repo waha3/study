@@ -8,5 +8,68 @@ fn main() {
   // * 并通过 trait bounds 对这些类型所必须提供的内容施加约束。这有时被称为 bounded parametric polymorphism
 
   // 顾及不同类型值的 trait 对象
-  println!("Hello, world!");
+  // ! 定义通用行为的 trait
+  // pub trait Draw {
+  //   fn draw(&self);
+  // }
+
+  // pub struct Screen {
+  //   components: Vec<Box<dyn Draw>>,
+  // }
+
+  // impl Screen {
+  //   pub fn run(&self) {
+  //     for component in self.components.iter() {
+  //       component.draw();
+  //     }
+  //   }
+  // }
+
+  // pub trait Draw {
+  //   fn draw(&self);
+  // }
+
+  // pub struct Screen<T: Draw> {
+  //   components: Vec<T>,
+  // }
+
+  // impl<T> Screen<T>
+  // where
+  //   T: Draw,
+  // {
+  //   pub fn run(&self) {
+  //     for component in self.components.iter() {
+  //       component.draw();
+  //     }
+  //   }
+  // }
+
+  // // ! 实现 trait
+  // pub struct Button {
+  //   pub width: u32,
+  //   pub height: u32,
+  //   pub label: String,
+  // }
+
+  // impl Draw for Button {
+  //   fn draw(&self) {}
+  // }
+
+  // ! 实现 trait
+
+  // ! trait对象需要类型安全
+  // * 返回值不是 Self
+  // * 没有泛型类型的参数
+
+  // pub trait Clone {
+  //   fn clone(&self) -> Self;
+  // }
+
+  // pub struct Screen {
+  //   pub components: Vec<Box<dyn Clone>>,
+  // }
+
+  // ! 面向对象设计模式的实现
+  // * 状态模式（state pattern）是一个面向对象设计模式
+
 }
