@@ -1,33 +1,33 @@
 fn main() {
   // ! 面向对象语言的特征
-  pub struct AveragedCollection {
-    list: Vec<i32>,
-    average: f64,
-  }
+  // pub struct AveragedCollection {
+  //   list: Vec<i32>,
+  //   average: f64,
+  // }
 
-  impl AveragedCollection {
-    fn add(&mut self, value: i32) {
-      self.list.push(value);
-      self.update_average();
-    }
+  // impl AveragedCollection {
+  //   fn add(&mut self, value: i32) {
+  //     self.list.push(value);
+  //     self.update_average();
+  //   }
 
-    fn remove(&mut self) -> Option<i32> {
-      match self.list.pop() {
-        Some(v) => {
-          self.update_average();
-          Some(v)
-        }
-        None => None,
-      }
-    }
-    fn average(&self) -> f64 {
-      self.average
-    }
-    fn update_average(&mut self) {
-      let total: i32 = self.list.iter().sum();
-      self.average = total as f64 / self.list.len() as f64
-    }
-  }
+  //   fn remove(&mut self) -> Option<i32> {
+  //     match self.list.pop() {
+  //       Some(v) => {
+  //         self.update_average();
+  //         Some(v)
+  //       }
+  //       None => None,
+  //     }
+  //   }
+  //   fn average(&self) -> f64 {
+  //     self.average
+  //   }
+  //   fn update_average(&mut self) {
+  //     let total: i32 = self.list.iter().sum();
+  //     self.average = total as f64 / self.list.len() as f64
+  //   }
+  // }
   // ! 对象包含数据和行为
   // ! 封装隐藏了实现细节
 
