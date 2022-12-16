@@ -63,14 +63,180 @@ fn main() {
   // }
 
   // ! 匹配命名变量
-  let x = Some(5);
-  let y = 10;
-  match x {
-    Some(50) => println!("got 50"),
-    Some(y) => println!("got y is {}", y),
-    _ => println!("Default case, x = {:?}", x),
+  // let x = Some(5);
+  // let y = 10;
+  // match x {
+  //   Some(50) => println!("got 50"),
+  //   Some(y) => println!("got y is {}", y),
+  //   _ => println!("Default case, x = {:?}", x),
+  // }
+  // println!("at the end: x = {:?}, y = {:?}", x, y);
+
+  // ! 多个模式
+  // let x = 1;
+  // match x {
+  //   1 | 2 => println!("1 or 2"),
+  //   3 => println!("3"),
+  //   _ => println!("anything"),
+  // }
+
+  // ! 通过 ..= 匹配值的范围
+  // let x = 5;
+  // match x {
+  //   1..=5 => println!("x is {}", x),
+  //   _ => println!("no match"),
+  // }
+
+  // ! 范围只允许用于数字或 char 值
+  // let c = 'd';
+  // match c {
+  //   'a'..='z' => println!("c is {}", c),
+  //   _ => println!("is not match"),
+  // }
+
+  // ! 解构并分解值
+  // struct Point {
+  //   x: i32,
+  //   y: i32,
+  // }
+  // let p = Point { x: 0, y: 7 };
+  // let Point { x: a, y: b } = p;
+  // let Point { x, y } = p;
+  // assert_eq!(a, 0);
+  // assert_eq!(b, 7);
+  // match p {
+  //   Point { x, y: 0 } => println!("On the x axis at {}", x),
+  //   Point { x: 0, y } => println!("On the y axis at {}", y),
+  //   Point { x, y } => println!("On neither axis: ({}, {})", x, y),
+  // }
+
+  // ! 解构枚举
+  // enum Message {
+  //   Quit,
+  //   Move { x: i32, y: i32 },
+  //   Write(String),
+  //   ChangeColor(i32, i32, i32),
+  // }
+  // let msg = Message::ChangeColor(0, 160, 255);
+  // match msg {
+  //   Message::Quit => println!("quit"),
+  //   Message::Move { x, y } => println!("move x {} y {}", x, y),
+  //   Message::Write(s) => println!("write s is {}", s),
+  //   Message::ChangeColor(a, b, c) => println!("change color is {} {} {}", a, b, c),
+  // }
+
+  // ! 解构嵌套的结构体和枚举
+  // enum Color {
+  //   Rgb(i32, i32, i32),
+  //   Hsv(i32, i32, i32),
+  // }
+
+  // enum Message {
+  //   Quit,
+  //   Move { x: i32, y: i32 },
+  //   Write(String),
+  //   ChangeColor(Color),
+  // }
+
+  // let msg = Message::ChangeColor(Color::Hsv(1, 2, 3));
+  // match msg {
+  //   Message::ChangeColor(Color::Hsv(h, s, v)) => println!("h s v is {} {} {}", h, s, v),
+  //   Message::ChangeColor(Color::Rgb(r, g, b)) => println!("r g b is {} {} {}", r, g, b),
+  //   _ => (),
+  // }
+
+  // ! 解构结构体和元组
+  // struct Point {
+  //   x: i32,
+  //   y: i32,
+  // }
+  // let ((feet, inche), Point { x, y }) = ((10, 20), Point { x: 1, y: 2 });
+
+  // ! 忽略模式中的值
+  // * 使用 _ 忽略整个值
+  // * 使用嵌套的 _ 忽略部分值
+  // let mut some_thing = Some(10);
+  // let new_some_thing = Some(20);
+  // match (some_thing, new_some_thing) {
+  //   (Some(_), Some(_)) => println!("is here"),
+  //   _ => (),
+  // }
+  // println!("setting is {:?}", some_thing);
+
+  // let numbers = (2, 4, 8, 16, 32);
+
+  // match numbers {
+  //   (first, _, third, _, fifth) => {
+  //     println!("Some numbers: {}, {}, {}", first, third, fifth)
+  //   }
+  // }
+
+  // ! 通过在名字前以一个下划线开头来忽略未使用的变量
+  // ! 用 .. 忽略剩余值
+  // struct Point {
+  //   x: i32,
+  //   y: i32,
+  //   z: i32,
+  // }
+  // let p = Point { x: 0, y: 0, z: 0 };
+  // match p {
+  //   Point { x, .. } => println!("x is {}", x),
+  // }
+
+  // let numbers = (2, 4, 8, 16, 32);
+
+  // match numbers {
+  //   (first, .., last) => {
+  //     println!("Some numbers: {}, {}", first, last);
+  //   }
+  // }
+
+  // match numbers {
+  //   (.., second, ..) => {
+  //     println!("Some numbers: {}", second)
+  //   }
+  // }
+
+  // ! 匹配守卫提供的额外条件
+  // let num = Some(4);
+  // match num {
+  //   Some(x) if x < 5 => println!("x is {}", x),
+  //   Some(x) => println!("here x is {}", x),
+  //   None => (),
+  // }
+
+  // let x = Some(5);
+  // let y = 10;
+
+  // match x {
+  //   Some(50) => println!("Got 50"),
+  //   Some(n) if n == y => println!("Matched, n = {}", n),
+  //   _ => println!("Default case, x = {:?}", x),
+  // }
+
+  // println!("at the end: x = {:?}, y = {}", x, y);
+
+  // let x = 4;
+  // let y = false;
+
+  // match x {
+  //   4 | 5 | 6 if y => println!("yes"),
+  //   _ => println!("no"),
+  // }
+
+  // ! @ 绑定
+  // * at 运算符（@）允许我们在创建一个存放值的变量的同时测试其值是否匹配模式
+  enum Message {
+    Hello { id: i32 },
   }
-  println!("at the end: x = {:?}, y = {:?}", x, y);
+  let msg = Message::Hello { id: 10 };
+
+  match msg {
+    Message::Hello {
+      id: id_var @ 1..=10,
+    } => println!("found id_var {}", id_var),
+    Message::Hello { id } => println!("id is {}", id),
+  }
 }
 
 // fn print_coordinate(&(x, y): &(i32, i32)) {
